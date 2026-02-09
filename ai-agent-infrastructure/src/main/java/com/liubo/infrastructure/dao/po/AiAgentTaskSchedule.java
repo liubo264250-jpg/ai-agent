@@ -1,6 +1,9 @@
 package com.liubo.infrastructure.dao.po;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -8,7 +11,10 @@ import java.time.LocalDateTime;
  * 智能体任务调度配置表
  * 表名: ai_agent_task_schedule
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
+@Builder
 public class AiAgentTaskSchedule {
 
     /** 主键ID */

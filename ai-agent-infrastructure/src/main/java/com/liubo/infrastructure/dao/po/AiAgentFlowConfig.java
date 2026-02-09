@@ -1,6 +1,9 @@
 package com.liubo.infrastructure.dao.po;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -8,7 +11,10 @@ import java.time.LocalDateTime;
  * 智能体-客户端关联表
  * 表名: ai_agent_flow_config
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
+@Builder
 public class AiAgentFlowConfig {
 
     /** 主键ID */

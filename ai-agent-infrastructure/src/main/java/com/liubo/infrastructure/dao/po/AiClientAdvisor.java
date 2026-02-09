@@ -1,6 +1,9 @@
 package com.liubo.infrastructure.dao.po;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -8,7 +11,10 @@ import java.time.LocalDateTime;
  * 顾问配置表
  * 表名: ai_client_advisor
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
+@Builder
 public class AiClientAdvisor {
 
     /** 主键ID */

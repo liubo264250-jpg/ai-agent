@@ -1,6 +1,9 @@
 package com.liubo.infrastructure.dao.po;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -8,7 +11,10 @@ import java.time.LocalDateTime;
  * MCP客户端配置表
  * 表名: ai_client_tool_mcp
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
+@Builder
 public class AiClientToolMcp {
 
     /** 主键ID */

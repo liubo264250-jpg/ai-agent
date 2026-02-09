@@ -1,6 +1,9 @@
 package com.liubo.infrastructure.dao.po;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -8,7 +11,10 @@ import java.time.LocalDateTime;
  * 系统提示词配置表
  * 表名: ai_client_system_prompt
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
+@Builder
 public class AiClientSystemPrompt {
 
     /** 主键ID */
