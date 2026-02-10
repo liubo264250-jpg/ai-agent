@@ -1,7 +1,7 @@
 package com.liubo.infrastructure.adapter.repository;
 
 import com.liubo.domain.adapter.repository.IAgentRepository;
-import com.liubo.domain.model.valobj.AiClientApiVO;
+import com.liubo.domain.model.valobj.*;
 import com.liubo.infrastructure.dao.*;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -55,5 +55,30 @@ public class AgentRepository implements IAgentRepository {
     public List<AiClientApiVO> queryAiClientApiVOListByClientIds(List<String> clientIdList) {
         if (CollectionUtils.isEmpty(clientIdList)) return List.of();
         return aiClientConfigDao.queryAiClientApiVOListByClientIds(clientIdList);
+    }
+
+    @Override
+    public List<AiClientModelVO> queryAiClientModelVOByClientIds(List<String> clientIdList) {
+        return List.of();
+    }
+
+    @Override
+    public List<AiClientToolMcpVO> queryAiClientToolMcpVOByClientIds(List<String> clientIdList) {
+        return List.of();
+    }
+
+    @Override
+    public List<AiClientSystemPromptVO> queryAiClientSystemPromptVOByClientIds(List<String> clientIdList) {
+        return List.of();
+    }
+
+    @Override
+    public List<AiClientAdvisorVO> queryAiClientAdvisorVOByClientIds(List<String> clientIdList) {
+        return List.of();
+    }
+
+    @Override
+    public List<AiClientVO> queryAiClientVOByClientIds(List<String> clientIdList) {
+        return List.of();
     }
 }

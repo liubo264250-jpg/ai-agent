@@ -7,6 +7,9 @@ import com.liubo.domain.service.armory.factory.DefaultArmoryStrategyFactory;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 
 import java.util.concurrent.ExecutionException;
@@ -32,5 +35,23 @@ public abstract class AbstractArmorySupport extends AbstractMultiThreadStrategyR
 
     @Override
     protected void multiThread(ArmoryCommandEntity armoryCommandEntity, DefaultArmoryStrategyFactory.DynamicContext dynamicContext) throws ExecutionException, InterruptedException, TimeoutException {
+    }
+
+
+    protected synchronized <T> void registerBean(String beanName, Class<T> beanClass, T beanInstance) {
+        DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
+        // 注册bean
+        BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(beanClass, () -> beanInstance);
+        BeanDefinition beanDefinition = beanDefinitionBuilder.getRawBeanDefinition();
+        // 如果Bean已存在，先移除
+        if (beanFactory.containsBean(beanName)) {
+            beanFactory.removeBeanDefinition(beanName);
+        }
+        beanFactory.registerBeanDefinition(beanName,beanDefinition);
+        log.info("成功注册Bean: {}", beanName);
+    }
+
+    protected <T> T getBean(String beanName) {
+        return (T) applicationContext.getBean(beanName);
     }
 }
