@@ -1,5 +1,8 @@
 package com.liubo.domain.service.armory.factory;
 
+import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
+import com.liubo.domain.model.entity.ArmoryCommandEntity;
+import com.liubo.domain.service.armory.RootNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +18,17 @@ import java.util.Map;
  */
 @Service
 public class DefaultArmoryStrategyFactory {
+
+    private final RootNode rootNode;
+
+    public DefaultArmoryStrategyFactory(RootNode rootNode) {
+        this.rootNode = rootNode;
+    }
+
+    public StrategyHandler<ArmoryCommandEntity, DynamicContext, String> armoryStrategyHandler(){
+        return rootNode;
+    }
+
 
     @Data
     @Builder

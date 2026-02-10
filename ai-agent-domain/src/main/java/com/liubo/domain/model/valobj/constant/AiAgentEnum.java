@@ -32,19 +32,20 @@ public enum AiAgentEnum {
     private String code;
 
     /**
-     * 数据名称
-     */
-    private String dataName;
-
-    /**
      * Bean 对象名称标签
      */
     private String beanNameTag;
 
     /**
+     * 数据名称
+     */
+    private String dataName;
+
+    /**
      * 装配数据策略
      */
     private String loadDataStrategy;
+
 
     /**
      * 根据 code 获取对应枚举
