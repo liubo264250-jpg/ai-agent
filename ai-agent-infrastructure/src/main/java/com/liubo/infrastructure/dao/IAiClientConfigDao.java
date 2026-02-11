@@ -1,5 +1,6 @@
 package com.liubo.infrastructure.dao;
 
+import com.liubo.domain.model.valobj.AiClientConfigVO;
 import com.liubo.infrastructure.dao.po.AiClientConfig;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -24,4 +25,8 @@ public interface IAiClientConfigDao {
 
     List<AiClientConfig> selectList();
 
+    /**
+     * 根据 modelId 列表，查询关联的 MCP ID 列表
+     */
+    List<AiClientConfigVO> queryAiClientToolMcpIdsByModelIds(@Param("modelIdList") List<String> modelIdList);
 }

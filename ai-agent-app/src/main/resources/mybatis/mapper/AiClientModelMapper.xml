@@ -40,4 +40,25 @@
         FROM ai_client_model
         ORDER BY id
     </select>
+
+    <select id="queryAiClientModelVOByClientIds" resultType="com.liubo.domain.model.valobj.AiClientModelVO">
+        SELECT DISTINCT
+            m.id,
+            m.model_id AS modelId,
+            m.api_id AS apiId,
+            m.model_name AS modelName,
+            m.model_type AS modelType
+        FROM
+            ai_client_config c
+        JOIN
+            ai_client_model m ON c.target_id = m.model_id AND m.status = 1
+        WHERE
+            c.source_type = 'client'
+            AND c.target_type = 'model'
+            AND c.status = 1
+            AND c.source_id IN
+        <foreach collection="clientIdList" item="clientId" open="(" separator="," close=")">
+            #{clientId}
+        </foreach>
+    </select>
 </mapper>

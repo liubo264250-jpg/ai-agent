@@ -42,4 +42,21 @@
         ORDER BY id
     </select>
 
+    <select id="queryAiClientToolMcpIdsByModelIds" resultType="com.liubo.domain.model.valobj.AiClientConfigVO">
+        SELECT
+            b.source_id,b.target_id
+        FROM
+            ai_client_config b
+        JOIN
+            ai_client_tool_mcp c ON b.target_id = c.mcp_id AND c.status = 1
+        WHERE
+            b.source_type = 'model'
+        AND b.target_type = 'tool_mcp'
+        AND b.status = 1
+        AND b.source_id IN
+        <foreach collection="modelIdList" item="modelId" open="(" separator="," close=")">
+            #{modelId}
+        </foreach>
+    </select>
+
 </mapper>

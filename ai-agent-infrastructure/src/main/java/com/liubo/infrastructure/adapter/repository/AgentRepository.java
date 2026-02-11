@@ -59,7 +59,8 @@ public class AgentRepository implements IAgentRepository {
 
     @Override
     public List<AiClientModelVO> queryAiClientModelVOByClientIds(List<String> clientIdList) {
-        return List.of();
+        if (CollectionUtils.isEmpty(clientIdList)) return List.of();
+        return aiClientModelDao.queryAiClientModelVOByClientIds(clientIdList);
     }
 
     @Override
@@ -71,6 +72,12 @@ public class AgentRepository implements IAgentRepository {
     @Override
     public List<AiClientSystemPromptVO> queryAiClientSystemPromptVOByClientIds(List<String> clientIdList) {
         return List.of();
+    }
+
+    @Override
+    public List<AiClientConfigVO> queryAiClientToolMcpIdsByModelIds(List<String> modelIdList) {
+        if (CollectionUtils.isEmpty(modelIdList)) return List.of();
+        return aiClientConfigDao.queryAiClientToolMcpIdsByModelIds(modelIdList);
     }
 
     @Override

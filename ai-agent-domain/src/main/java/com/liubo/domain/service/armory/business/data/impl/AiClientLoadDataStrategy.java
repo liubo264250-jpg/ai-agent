@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 import static com.liubo.domain.model.valobj.constant.Constant.TRANSPORT_TYPE_SSE;
 import static com.liubo.domain.model.valobj.constant.Constant.TRANSPORT_TYPE_STDIO;
@@ -46,7 +47,20 @@ public class AiClientLoadDataStrategy implements ILoadDataStrategy {
 
         CompletableFuture<List<AiClientModelVO>> aiClientModelListFuture = CompletableFuture.supplyAsync(() -> {
             log.info("查询配置数据(ai_client_model) {}", clientIdList);
-            return repository.queryAiClientModelVOByClientIds(clientIdList);
+            List<AiClientModelVO> aiClientModelVOList = repository.queryAiClientModelVOByClientIds(clientIdList);
+            if (CollectionUtils.isEmpty(aiClientModelVOList)) return List.of();
+            List<String> modelIdList = aiClientModelVOList.stream().map(AiClientModelVO::getModelId).collect(Collectors.toList());
+            Map<String, List<AiClientConfigVO>> mcpIdMap = repository.queryAiClientToolMcpIdsByModelIds(modelIdList)
+                    .stream()
+                    .collect(Collectors.groupingBy(AiClientConfigVO::getSourceId));
+            aiClientModelVOList.forEach(model -> {
+                List<AiClientConfigVO> aiClientConfigVOList = mcpIdMap.get(model.getModelId());
+                if (!CollectionUtils.isEmpty(aiClientConfigVOList)) {
+                    List<String> mcpIdList = aiClientConfigVOList.stream().map(AiClientConfigVO::getTargetId).collect(Collectors.toList());
+                    model.setToolMcpIds(mcpIdList);
+                }
+            });
+            return aiClientModelVOList;
         }, threadPoolExecutor);
 
         CompletableFuture<List<AiClientToolMcpVO>> aiClientToolMcpListFuture = CompletableFuture.supplyAsync(() -> {
@@ -62,7 +76,8 @@ public class AiClientLoadDataStrategy implements ILoadDataStrategy {
                 } else if (TRANSPORT_TYPE_STDIO.equals(transportType)) {
                     // 解析STDIO配置
                     Map<String, AiClientToolMcpVO.TransportConfigStdio.Stdio> stdio =
-                            JSON.parseObject(mcpVO.getTransportConfig(), new TypeReference<>() {});
+                            JSON.parseObject(mcpVO.getTransportConfig(), new TypeReference<>() {
+                            });
                     AiClientToolMcpVO.TransportConfigStdio transportConfigStdio = new AiClientToolMcpVO.TransportConfigStdio();
                     transportConfigStdio.setStdio(stdio);
                     mcpVO.setTransportConfigStdio(transportConfigStdio);
