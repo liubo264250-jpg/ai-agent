@@ -2,8 +2,11 @@ package com.liubo.app;
 
 import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
 import com.liubo.domain.model.entity.ArmoryCommandEntity;
+import com.liubo.domain.model.valobj.AiClientToolMcpVO;
 import com.liubo.domain.model.valobj.constant.AiAgentEnum;
 import com.liubo.domain.service.armory.factory.DefaultArmoryStrategyFactory;
+import com.liubo.infrastructure.dao.IAiClientToolMcpDao;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,10 +28,13 @@ import java.util.List;
 public class AiAgentTest {
 
     @Autowired
-    private DefaultArmoryStrategyFactory  defaultArmoryStrategyFactory;
+    private DefaultArmoryStrategyFactory defaultArmoryStrategyFactory;
 
     @Autowired
     private ApplicationContext applicationContext;
+
+    @Resource
+    private IAiClientToolMcpDao iAiClientToolMcpDao;
 
     @Test
     public void test_aiClientApiNode() throws Exception {
@@ -44,5 +50,11 @@ public class AiAgentTest {
                 , new DefaultArmoryStrategyFactory.DynamicContext());
         OpenAiApi openAiApi = (OpenAiApi) applicationContext.getBean(AiAgentEnum.AI_CLIENT_API.getBeanName("1001"));
         log.info("测试结果：{}", openAiApi);
+    }
+
+    @Test
+    public void clientToolMcpDao() {
+        List<AiClientToolMcpVO> aiClientToolMcpVOS = iAiClientToolMcpDao.queryAiClientToolMcpVOByClientIds(List.of("3001"));
+        System.out.println(aiClientToolMcpVOS);
     }
 }

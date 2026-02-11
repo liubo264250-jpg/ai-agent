@@ -1,5 +1,6 @@
 package com.liubo.domain.model.entity;
 
+import com.liubo.domain.model.valobj.constant.AiAgentEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,4 +30,8 @@ public class ArmoryCommandEntity implements Serializable {
      * 命令索引（clientId、modelId、apiId...）
      */
     private List<String> commandIdList;
+
+    public String getLoadDataStrategy() {
+        return AiAgentEnum.getByCode(commandType).getLoadDataStrategy();
+    }
 }

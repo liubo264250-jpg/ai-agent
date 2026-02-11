@@ -1,5 +1,6 @@
 package com.liubo.domain.service.armory.business.data.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.liubo.domain.adapter.repository.IAgentRepository;
 import com.liubo.domain.model.entity.ArmoryCommandEntity;
 import com.liubo.domain.model.valobj.*;
@@ -9,10 +10,16 @@ import com.liubo.domain.service.armory.factory.DefaultArmoryStrategyFactory;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import com.alibaba.fastjson.TypeReference;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
+
+import static com.liubo.domain.model.valobj.constant.Constant.TRANSPORT_TYPE_SSE;
+import static com.liubo.domain.model.valobj.constant.Constant.TRANSPORT_TYPE_STDIO;
 
 /**
  * @author 68
@@ -44,7 +51,24 @@ public class AiClientLoadDataStrategy implements ILoadDataStrategy {
 
         CompletableFuture<List<AiClientToolMcpVO>> aiClientToolMcpListFuture = CompletableFuture.supplyAsync(() -> {
             log.info("查询配置数据(ai_client_tool_mcp) {}", clientIdList);
-            return repository.queryAiClientToolMcpVOByClientIds(clientIdList);
+            List<AiClientToolMcpVO> aiClientToolMcpVOList = repository.queryAiClientToolMcpVOByClientIds(clientIdList);
+            if (CollectionUtils.isEmpty(aiClientToolMcpVOList)) return List.of();
+            for (AiClientToolMcpVO mcpVO : aiClientToolMcpVOList) {
+                String transportType = mcpVO.getTransportType();
+                if (TRANSPORT_TYPE_SSE.equals(transportType)) {
+                    // 解析SSE配置
+                    AiClientToolMcpVO.TransportConfigSse transportConfigSse = JSON.parseObject(mcpVO.getTransportConfig(), AiClientToolMcpVO.TransportConfigSse.class);
+                    mcpVO.setTransportConfigSse(transportConfigSse);
+                } else if (TRANSPORT_TYPE_STDIO.equals(transportType)) {
+                    // 解析STDIO配置
+                    Map<String, AiClientToolMcpVO.TransportConfigStdio.Stdio> stdio =
+                            JSON.parseObject(mcpVO.getTransportConfig(), new TypeReference<>() {});
+                    AiClientToolMcpVO.TransportConfigStdio transportConfigStdio = new AiClientToolMcpVO.TransportConfigStdio();
+                    transportConfigStdio.setStdio(stdio);
+                    mcpVO.setTransportConfigStdio(transportConfigStdio);
+                }
+            }
+            return aiClientToolMcpVOList;
         }, threadPoolExecutor);
 
         CompletableFuture<List<AiClientSystemPromptVO>> aiClientSystemPromptListFuture = CompletableFuture.supplyAsync(() -> {
@@ -72,8 +96,8 @@ public class AiClientLoadDataStrategy implements ILoadDataStrategy {
         ).thenRun(() -> {
             dynamicContext.setValue(AiAgentEnum.AI_CLIENT_API.getDataName(), aiClientApiListFuture.join());
             dynamicContext.setValue(AiAgentEnum.AI_CLIENT_MODEL.getDataName(), aiClientModelListFuture.join());
-            dynamicContext.setValue(AiAgentEnum.AI_CLIENT_SYSTEM_PROMPT.getDataName(), aiClientToolMcpListFuture.join());
-            dynamicContext.setValue(AiAgentEnum.AI_CLIENT_TOOL_MCP.getDataName(), aiClientSystemPromptListFuture.join());
+            dynamicContext.setValue(AiAgentEnum.AI_CLIENT_SYSTEM_PROMPT.getDataName(), aiClientSystemPromptListFuture.join());
+            dynamicContext.setValue(AiAgentEnum.AI_CLIENT_TOOL_MCP.getDataName(), aiClientToolMcpListFuture.join());
             dynamicContext.setValue(AiAgentEnum.AI_CLIENT_ADVISOR.getDataName(), aiClientAdvisorListFuture.join());
             dynamicContext.setValue(AiAgentEnum.AI_CLIENT.getDataName(), aiClientListFuture.join());
         }).join();

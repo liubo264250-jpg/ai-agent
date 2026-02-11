@@ -37,6 +37,13 @@ public abstract class AbstractArmorySupport extends AbstractMultiThreadStrategyR
     protected void multiThread(ArmoryCommandEntity armoryCommandEntity, DefaultArmoryStrategyFactory.DynamicContext dynamicContext) throws ExecutionException, InterruptedException, TimeoutException {
     }
 
+    protected String getDataName() {
+        return null;
+    }
+
+    protected String getBeanName(String beanId) {
+        return null;
+    }
 
     protected synchronized <T> void registerBean(String beanName, Class<T> beanClass, T beanInstance) {
         DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
@@ -47,7 +54,7 @@ public abstract class AbstractArmorySupport extends AbstractMultiThreadStrategyR
         if (beanFactory.containsBean(beanName)) {
             beanFactory.removeBeanDefinition(beanName);
         }
-        beanFactory.registerBeanDefinition(beanName,beanDefinition);
+        beanFactory.registerBeanDefinition(beanName, beanDefinition);
         log.info("成功注册Bean: {}", beanName);
     }
 

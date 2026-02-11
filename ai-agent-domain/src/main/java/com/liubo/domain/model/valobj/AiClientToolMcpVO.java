@@ -5,21 +5,69 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Map;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
 public class AiClientToolMcpVO {
-    /** 主键ID */
+    /**
+     * 主键ID
+     */
     private Long id;
-    /** MCP名称 */
+    /**
+     * MCP名称
+     */
     private String mcpId;
-    /** MCP名称 */
+    /**
+     * MCP名称
+     */
     private String mcpName;
-    /** 传输类型(sse/stdio) */
+    /**
+     * 传输类型(sse/stdio)
+     */
     private String transportType;
-    /** 传输配置(sse/stdio) */
+    /**
+     * 传输配置(sse/stdio)
+     */
     private String transportConfig;
-    /** 请求超时时间(分钟) */
+    /**
+     * 请求超时时间(分钟)
+     */
     private Integer requestTimeout;
+    /**
+     * 传输配置 - sse
+     */
+    private TransportConfigSse transportConfigSse;
+    /**
+     * 传输配置 - stdio
+     */
+    private TransportConfigStdio transportConfigStdio;
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class TransportConfigSse {
+        private String baseUri;
+        private String sseEndpoint;
+    }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class TransportConfigStdio {
+
+        private Map<String, Stdio> stdio;
+
+        @Data
+        public static class Stdio {
+            private String command;
+            private List<String> args;
+            private Map<String, String> env;
+        }
+    }
 }

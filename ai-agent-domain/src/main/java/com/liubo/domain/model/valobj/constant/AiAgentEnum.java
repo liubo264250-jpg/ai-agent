@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author 68
  * 2026/2/10 08:28
@@ -47,6 +50,14 @@ public enum AiAgentEnum {
     private String loadDataStrategy;
 
 
+    private static final Map<String, AiAgentEnum> ENUM_MAP = new HashMap<>();
+
+    static {
+        for (AiAgentEnum aiAgentEnum : values()) {
+            ENUM_MAP.put(aiAgentEnum.getCode(), aiAgentEnum);
+        }
+    }
+
     /**
      * 根据 code 获取对应枚举
      *
@@ -58,12 +69,11 @@ public enum AiAgentEnum {
         if (code == null || code.isEmpty()) {
             throw new RuntimeException("code value is Empty!");
         }
-        for (AiAgentEnum e : values()) {
-            if (code.equals(e.getCode())) {
-                return e;
-            }
+        AiAgentEnum result = ENUM_MAP.get(code);
+        if (result == null) {
+            throw new RuntimeException("code value " + code + " not exist!");
         }
-        throw new RuntimeException("code value " + code + " not exist!");
+        return result;
     }
 
     public String getBeanName(String id) {

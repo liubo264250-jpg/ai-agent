@@ -41,4 +41,28 @@
         FROM ai_client_api
         ORDER BY id
     </select>
+
+    <select id="queryAiClientApiVOListByClientIds" resultType="com.liubo.domain.model.valobj.AiClientApiVO">
+        SELECT DISTINCT
+            a.id AS id,
+            a.api_id AS apiId,
+            a.base_url AS baseUrl,
+            a.api_key AS apiKey,
+            a.completions_path AS completionsPath,
+            a.embeddings_path AS embeddingsPath
+        FROM
+            ai_client_config c
+        JOIN
+            ai_client_model m ON m.model_id = c.target_id AND m.status = 1
+        JOIN
+            ai_client_api a ON a.api_id = m.api_id AND a.status = 1
+        WHERE
+            c.source_type = 'client'
+            AND c.target_type = 'model'
+            AND c.status = 1
+            AND c.source_id IN
+        <foreach collection="clientIdList" item="clientId" open="(" separator="," close=")">
+            #{clientId}
+        </foreach>
+    </select>
 </mapper>

@@ -3,7 +3,6 @@ package com.liubo.domain.service.armory;
 import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
 import com.alibaba.fastjson.JSON;
 import com.liubo.domain.model.entity.ArmoryCommandEntity;
-import com.liubo.domain.model.valobj.constant.AiAgentEnum;
 import com.liubo.domain.service.armory.business.data.ILoadDataStrategy;
 import com.liubo.domain.service.armory.factory.DefaultArmoryStrategyFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -34,9 +33,7 @@ public class RootNode extends AbstractArmorySupport {
     @Override
     protected void multiThread(ArmoryCommandEntity requestParameter, DefaultArmoryStrategyFactory.DynamicContext dynamicContext) throws ExecutionException, InterruptedException, TimeoutException {
         // 通过策略加载数据
-        String commandType = requestParameter.getCommandType();
-        AiAgentEnum aiAgentEnum = AiAgentEnum.getByCode(commandType);
-        ILoadDataStrategy loadDataStrategy = loadDataStrategyMap.get(aiAgentEnum.getLoadDataStrategy());
+        ILoadDataStrategy loadDataStrategy = loadDataStrategyMap.get(requestParameter.getLoadDataStrategy());
         loadDataStrategy.loadData(requestParameter, dynamicContext);
     }
 
