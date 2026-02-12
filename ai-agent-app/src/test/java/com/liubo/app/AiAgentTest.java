@@ -2,7 +2,6 @@ package com.liubo.app;
 
 import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
 import com.liubo.domain.model.entity.ArmoryCommandEntity;
-import com.liubo.domain.model.valobj.AiClientToolMcpVO;
 import com.liubo.domain.model.valobj.constant.AiAgentEnum;
 import com.liubo.domain.service.armory.factory.DefaultArmoryStrategyFactory;
 import com.liubo.infrastructure.dao.IAiClientToolMcpDao;
@@ -10,6 +9,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -53,8 +53,18 @@ public class AiAgentTest {
     }
 
     @Test
-    public void clientToolMcpDao() {
-        List<AiClientToolMcpVO> aiClientToolMcpVOS = iAiClientToolMcpDao.queryAiClientToolMcpVOByClientIds(List.of("3001"));
-        System.out.println(aiClientToolMcpVOS);
+    public void test_aiClientModelNode() throws Exception {
+        StrategyHandler<ArmoryCommandEntity, DefaultArmoryStrategyFactory.DynamicContext, String> strategyHandler
+                = defaultArmoryStrategyFactory.armoryStrategyHandler();
+
+        String apply = strategyHandler.apply(
+                ArmoryCommandEntity.
+                        builder()
+                        .commandType(AiAgentEnum.AI_CLIENT.getCode())
+                        .commandIdList(List.of("3001"))
+                        .build()
+                , new DefaultArmoryStrategyFactory.DynamicContext());
+        OpenAiChatModel openAiChatModel = (OpenAiChatModel) applicationContext.getBean(AiAgentEnum.AI_CLIENT_MODEL.getBeanName("2001"));
+        log.info("模型构建:{}", openAiChatModel);
     }
 }

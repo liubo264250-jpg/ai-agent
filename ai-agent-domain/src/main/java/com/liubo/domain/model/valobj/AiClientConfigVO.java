@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @AllArgsConstructor
@@ -12,6 +13,8 @@ import java.io.Serializable;
 @Data
 @Builder
 public class AiClientConfigVO implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 7634878476406543383L;
     /**
      * 源类型（model、client）
      */

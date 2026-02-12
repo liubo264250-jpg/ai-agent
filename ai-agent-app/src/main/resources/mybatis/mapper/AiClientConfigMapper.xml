@@ -44,7 +44,7 @@
 
     <select id="queryAiClientToolMcpIdsByModelIds" resultType="com.liubo.domain.model.valobj.AiClientConfigVO">
         SELECT
-            b.source_id,b.target_id
+            b.source_id as sourceId,b.target_id as targetId
         FROM
             ai_client_config b
         JOIN

@@ -42,5 +42,4 @@ public class AppException extends RuntimeException {
                 ", info='" + info + '\'' +
                 '}';
     }
-
 }
