@@ -1,5 +1,6 @@
 package com.liubo.infrastructure.dao;
 
+import com.liubo.domain.model.valobj.AiClientAdvisorVO;
 import com.liubo.infrastructure.dao.po.AiClientAdvisor;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,4 +24,6 @@ public interface IAiClientAdvisorDao {
     int deleteById(@Param("id") Long id);
 
     List<AiClientAdvisor> selectList();
+
+    List<AiClientAdvisorVO> queryAiClientAdvisorVOByClientIds(@Param("clientIdList") List<String> clientIdList);
 }

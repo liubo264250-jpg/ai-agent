@@ -41,4 +41,27 @@
         FROM ai_client_advisor
         ORDER BY id
     </select>
+
+    <select id="queryAiClientAdvisorVOByClientIds"
+            resultType="com.liubo.domain.model.valobj.AiClientAdvisorVO">
+        SELECT DISTINCT
+            c.id,
+            c.advisor_id AS advisorId,
+            c.advisor_name AS advisorName,
+            c.advisor_type AS advisorType,
+            c.order_num AS orderNum,
+            c.ext_param AS extParam
+        FROM
+            ai_client_config a
+        JOIN
+            ai_client_advisor c ON a.target_id = c.advisor_id AND c.status = 1
+        WHERE
+            a.source_type = 'client'
+            AND a.target_type = 'advisor'
+            AND a.status = 1
+            AND a.source_id IN
+        <foreach collection="clientIdList" item="clientId" open="(" separator="," close=")">
+            #{clientId}
+        </foreach>
+    </select>
 </mapper>

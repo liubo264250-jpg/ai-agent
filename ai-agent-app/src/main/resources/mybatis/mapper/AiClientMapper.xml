@@ -39,4 +39,18 @@
         FROM ai_client
         ORDER BY id
     </select>
+
+    <select id="queryAiClientVOByClientIds" resultType="com.liubo.domain.model.valobj.AiClientVO">
+        SELECT
+            id,
+            client_id as clientId,
+            client_name as clientName,
+            description as description
+        FROM
+            ai_client
+        WHERE client_id IN
+        <foreach collection="clientIdList" item="clientId" open="(" separator="," close=")">
+            #{clientId}
+        </foreach>
+    </select>
 </mapper>

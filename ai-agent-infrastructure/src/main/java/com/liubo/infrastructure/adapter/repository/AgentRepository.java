@@ -5,6 +5,7 @@ import com.liubo.domain.model.valobj.*;
 import com.liubo.infrastructure.dao.*;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
@@ -71,22 +72,25 @@ public class AgentRepository implements IAgentRepository {
 
     @Override
     public List<AiClientSystemPromptVO> queryAiClientSystemPromptVOByClientIds(List<String> clientIdList) {
-        return List.of();
+        if (CollectionUtils.isEmpty(clientIdList)) return List.of();
+        return aiClientSystemPromptDao.queryAiClientSystemPromptVOByClientIds(clientIdList);
     }
 
     @Override
-    public List<AiClientConfigVO> queryAiClientToolMcpIdsByModelIds(List<String> modelIdList) {
-        if (CollectionUtils.isEmpty(modelIdList)) return List.of();
-        return aiClientConfigDao.queryAiClientToolMcpIdsByModelIds(modelIdList);
+    public List<AiClientConfigVO> queryAiClientConfigVOBySourceTypeAndId(String sourceType,List<String> sourceIdList) {
+        if (StringUtils.isBlank(sourceType) && CollectionUtils.isEmpty(sourceIdList)) return List.of();
+        return aiClientConfigDao.queryAiClientConfigVOBySourceTypeAndId(sourceType,sourceIdList);
     }
 
     @Override
     public List<AiClientAdvisorVO> queryAiClientAdvisorVOByClientIds(List<String> clientIdList) {
-        return List.of();
+        if (CollectionUtils.isEmpty(clientIdList)) return List.of();
+        return aiClientAdvisorDao.queryAiClientAdvisorVOByClientIds(clientIdList);
     }
 
     @Override
     public List<AiClientVO> queryAiClientVOByClientIds(List<String> clientIdList) {
-        return List.of();
+        if (CollectionUtils.isEmpty(clientIdList)) return List.of();
+        return aiClientDao.queryAiClientVOByClientIds(clientIdList);
     }
 }

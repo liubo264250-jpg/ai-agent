@@ -1,5 +1,6 @@
 package com.liubo.infrastructure.dao;
 
+import com.liubo.domain.model.valobj.AiClientSystemPromptVO;
 import com.liubo.infrastructure.dao.po.AiClientSystemPrompt;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,4 +24,6 @@ public interface IAiClientSystemPromptDao {
     int deleteById(@Param("id") Long id);
 
     List<AiClientSystemPrompt> selectList();
+
+    List<AiClientSystemPromptVO> queryAiClientSystemPromptVOByClientIds(@Param("clientIdList") List<String> clientIdList);
 }

@@ -15,6 +15,7 @@ import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,13 +26,17 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class AiClientModelNode extends AbstractArmorySupport {
+
+    @Resource
+    private AiClientAdvisorNode aiClientAdvisorNode;
+
     @Override
     protected String doApply(ArmoryCommandEntity requestParameter, DefaultArmoryStrategyFactory.DynamicContext dynamicContext) throws Exception {
         log.info("Ai Agent 构建，model 构建节点 {}", JSON.toJSONString(requestParameter));
         List<AiClientModelVO> aiClientModelVOList = dynamicContext.getValue(getDataName());
         if (CollectionUtils.isEmpty(aiClientModelVOList)) {
             log.warn("没有需要被初始化的 ai client model");
-            return null;
+            return router(requestParameter, dynamicContext);
         }
         for (AiClientModelVO modelVO : aiClientModelVOList) {
             OpenAiApi openAiApi = getBean(AiAgentEnum.AI_CLIENT_API.getBeanName(modelVO.getApiId()));
@@ -60,7 +65,7 @@ public class AiClientModelNode extends AbstractArmorySupport {
 
     @Override
     public StrategyHandler<ArmoryCommandEntity, DefaultArmoryStrategyFactory.DynamicContext, String> get(ArmoryCommandEntity armoryCommandEntity, DefaultArmoryStrategyFactory.DynamicContext dynamicContext) throws Exception {
-        return defaultStrategyHandler;
+        return aiClientAdvisorNode;
     }
 
 

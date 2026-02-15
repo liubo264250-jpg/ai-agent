@@ -25,8 +25,5 @@ public interface IAiClientConfigDao {
 
     List<AiClientConfig> selectList();
 
-    /**
-     * 根据 modelId 列表，查询关联的 MCP ID 列表
-     */
-    List<AiClientConfigVO> queryAiClientToolMcpIdsByModelIds(@Param("modelIdList") List<String> modelIdList);
+    List<AiClientConfigVO> queryAiClientConfigVOBySourceTypeAndId(@Param("sourceType") String sourceType, @Param("sourceIdList")List<String> sourceIdList);
 }

@@ -1,5 +1,6 @@
 package com.liubo.domain.model.valobj;
 
+import com.liubo.domain.model.valobj.constant.AiAgentEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,7 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,4 +27,43 @@ public class AiClientVO implements Serializable {
     private String clientName;
     /** 描述 */
     private String description;
+    /**
+     * 全局唯一模型ID
+     */
+    private String modelId;
+
+    /**
+     * Prompt ID List
+     */
+    private List<String> promptIdList;
+
+    /**
+     * MCP ID List
+     */
+    private List<String> mcpIdList;
+
+    /**
+     * 顾问ID List
+     */
+    private List<String> advisorIdList;
+
+    public String getModelBeanName() {
+        return AiAgentEnum.AI_CLIENT_MODEL.getBeanName(modelId);
+    }
+
+    public List<String> getMcpBeanNameList() {
+        List<String> mcpBeanNameList = new ArrayList<>();
+        for (String mcpId : mcpIdList) {
+            mcpBeanNameList.add(AiAgentEnum.AI_CLIENT_TOOL_MCP.getBeanName(mcpId));
+        }
+        return mcpBeanNameList;
+    }
+
+    public List<String> getAdvisorBeanNameList() {
+        List<String> advisorBeanNameList = new ArrayList<>();
+        for (String advisorId : advisorIdList) {
+            advisorBeanNameList.add(AiAgentEnum.AI_CLIENT_ADVISOR.getBeanName(advisorId));
+        }
+        return advisorBeanNameList;
+    }
 }

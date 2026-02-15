@@ -28,4 +28,23 @@ public class AiClientAdvisorVO implements Serializable {
     private Integer orderNum;
     /** 扩展参数配置，json 记录 */
     private String extParam;
+    private ChatMemory chatMemory;
+    private RagAnswer ragAnswer;
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ChatMemory {
+        private Integer maxMessages;
+    }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RagAnswer {
+        private Integer topK;
+        private String filterExpression;
+    }
 }

@@ -40,4 +40,25 @@
         FROM ai_client_system_prompt
         ORDER BY id
     </select>
+    <select id="queryAiClientSystemPromptVOByClientIds"
+            resultType="com.liubo.domain.model.valobj.AiClientSystemPromptVO">
+        SELECT DISTINCT
+            b.id,
+            b.prompt_id AS promptId,
+            b.prompt_name AS promptName,
+            b.prompt_content AS promptContent,
+            b.description AS description
+        FROM
+            ai_client_config a
+        JOIN
+            ai_client_system_prompt b  ON a.target_id = b.prompt_id AND b.status = 1
+        WHERE
+            a.source_type = 'client'
+            AND a.target_type = 'prompt'
+            AND a.status = 1
+            AND a.source_id IN
+        <foreach collection="clientIdList" item="clientId" open="(" separator="," close=")">
+            #{clientId}
+        </foreach>
+    </select>
 </mapper>

@@ -13,14 +13,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import com.alibaba.fastjson.TypeReference;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 
-import static com.liubo.domain.model.valobj.constant.Constant.TRANSPORT_TYPE_SSE;
-import static com.liubo.domain.model.valobj.constant.Constant.TRANSPORT_TYPE_STDIO;
+import static com.liubo.domain.model.valobj.constant.Constant.*;
 
 /**
  * @author 68
@@ -50,7 +50,7 @@ public class AiClientLoadDataStrategy implements ILoadDataStrategy {
             List<AiClientModelVO> aiClientModelVOList = repository.queryAiClientModelVOByClientIds(clientIdList);
             if (CollectionUtils.isEmpty(aiClientModelVOList)) return List.of();
             List<String> modelIdList = aiClientModelVOList.stream().map(AiClientModelVO::getModelId).collect(Collectors.toList());
-            Map<String, List<AiClientConfigVO>> mcpIdMap = repository.queryAiClientToolMcpIdsByModelIds(modelIdList)
+            Map<String, List<AiClientConfigVO>> mcpIdMap =  repository.queryAiClientConfigVOBySourceTypeAndId(AiAgentEnum.AI_CLIENT_MODEL.getCode(), modelIdList)
                     .stream()
                     .collect(Collectors.groupingBy(AiClientConfigVO::getSourceId));
             aiClientModelVOList.forEach(model -> {
@@ -86,19 +86,71 @@ public class AiClientLoadDataStrategy implements ILoadDataStrategy {
             return aiClientToolMcpVOList;
         }, threadPoolExecutor);
 
-        CompletableFuture<List<AiClientSystemPromptVO>> aiClientSystemPromptListFuture = CompletableFuture.supplyAsync(() -> {
+        CompletableFuture<Map<String, AiClientSystemPromptVO>> aiClientSystemPromptListFuture = CompletableFuture.supplyAsync(() -> {
             log.info("查询配置数据(ai_client_system_prompt) {}", clientIdList);
-            return repository.queryAiClientSystemPromptVOByClientIds(clientIdList);
+            Map<String, AiClientSystemPromptVO> systemPromptVOMap = repository.queryAiClientSystemPromptVOByClientIds(clientIdList).stream()
+                    .collect(Collectors.toMap(AiClientSystemPromptVO::getPromptId,
+                            item -> item, (v1, v2) -> v1));
+            return systemPromptVOMap;
         }, threadPoolExecutor);
 
         CompletableFuture<List<AiClientAdvisorVO>> aiClientAdvisorListFuture = CompletableFuture.supplyAsync(() -> {
             log.info("查询配置数据(ai_client_advisor) {}", clientIdList);
-            return repository.queryAiClientAdvisorVOByClientIds(clientIdList);
+            List<AiClientAdvisorVO> aiClientAdvisorVOList = repository.queryAiClientAdvisorVOByClientIds(clientIdList);
+            if (CollectionUtils.isEmpty(aiClientAdvisorVOList)) return List.of();{}
+            for (AiClientAdvisorVO advisorVO : aiClientAdvisorVOList) {
+                String advisorType = advisorVO.getAdvisorType();
+                if (ADVISOR_TYPE_CHAT_MEMORY.equals(advisorType)) {
+                    AiClientAdvisorVO.ChatMemory chatMemory = JSON.parseObject(advisorVO.getExtParam(), AiClientAdvisorVO.ChatMemory.class);
+                    advisorVO.setChatMemory(chatMemory);
+                } else if (ADVISOR_TYPE_RAG_ANSWER.equals(advisorType)) {
+                    AiClientAdvisorVO.RagAnswer ragAnswer = JSON.parseObject(advisorVO.getExtParam(), AiClientAdvisorVO.RagAnswer.class);
+                    advisorVO.setRagAnswer(ragAnswer);
+                }
+            }
+            return aiClientAdvisorVOList;
         }, threadPoolExecutor);
 
         CompletableFuture<List<AiClientVO>> aiClientListFuture = CompletableFuture.supplyAsync(() -> {
             log.info("查询配置数据(ai_client) {}", clientIdList);
-            return repository.queryAiClientVOByClientIds(clientIdList);
+            List<AiClientVO> aiClientVOList = repository.queryAiClientVOByClientIds(clientIdList);
+            List<AiClientConfigVO> aiClientConfigVOList = repository.queryAiClientConfigVOBySourceTypeAndId(AiAgentEnum.AI_CLIENT.getCode(), clientIdList);
+            List<String> mcpIdList = aiClientConfigVOList.stream()
+                    .filter(config -> AiAgentEnum.AI_CLIENT_MODEL.getCode().equals(config.getTargetType()))
+                    .map(AiClientConfigVO::getTargetId)
+                    .collect(Collectors.toList());
+            Map<String, List<AiClientConfigVO>> clientConfigMap = aiClientConfigVOList.stream().collect(Collectors.groupingBy(AiClientConfigVO::getSourceId));
+
+            Map<String, List<AiClientConfigVO>> modelConfigMap = repository.queryAiClientConfigVOBySourceTypeAndId(AiAgentEnum.AI_CLIENT_MODEL.getCode(), mcpIdList)
+                    .stream().collect(Collectors.groupingBy(AiClientConfigVO::getSourceId));
+            for (AiClientVO aiClientVO : aiClientVOList) {
+                List<AiClientConfigVO> clientConfigList = clientConfigMap.get(aiClientVO.getClientId());
+                if (CollectionUtils.isEmpty(clientConfigList)) continue;
+
+                List<String> configAdvisorIdList = new ArrayList<>();
+                List<String> configMcpIdList = new ArrayList<>();
+                List<String> configPromptIdList = new ArrayList<>();
+                String modelId = null;
+                for (AiClientConfigVO clientConfigVO : clientConfigList) {
+                    String targetType = clientConfigVO.getTargetType();
+                    if (AiAgentEnum.AI_CLIENT_MODEL.getCode().equals(targetType)) {
+                        modelId = clientConfigVO.getTargetId();
+                        List<AiClientConfigVO> modelConfigList = modelConfigMap.get(clientConfigVO.getTargetId());
+                        if (!CollectionUtils.isEmpty(modelConfigList)) {
+                            modelConfigList.stream().map(AiClientConfigVO::getTargetId).forEach(configMcpIdList::add);
+                        }
+                    }else if (AiAgentEnum.AI_CLIENT_ADVISOR.getCode().equals(targetType)){
+                        configAdvisorIdList.add(clientConfigVO.getTargetId());
+                    }else if (AiAgentEnum.AI_CLIENT_SYSTEM_PROMPT.getCode().equals(targetType)){
+                        configPromptIdList.add(clientConfigVO.getTargetId());
+                    }
+                }
+                aiClientVO.setModelId(modelId);
+                aiClientVO.setAdvisorIdList(configAdvisorIdList);
+                aiClientVO.setPromptIdList(configPromptIdList);
+                aiClientVO.setMcpIdList(configMcpIdList);
+            }
+            return aiClientVOList;
         }, threadPoolExecutor);
 
         CompletableFuture.allOf(

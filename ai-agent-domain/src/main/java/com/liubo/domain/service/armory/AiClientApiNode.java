@@ -27,7 +27,7 @@ public class AiClientApiNode extends AbstractArmorySupport {
         List<AiClientApiVO> aiClientApiVOList = dynamicContext.getValue(getDataName());
         if (CollectionUtils.isEmpty(aiClientApiVOList)) {
             log.warn("没有需要被初始化的 ai client api");
-            return null;
+            return router(requestParameter, dynamicContext);
         }
         for (AiClientApiVO aiClientApiVO : aiClientApiVOList) {
             // 构建 OpenAiApi

@@ -22,5 +22,5 @@ public interface IAgentRepository {
 
     List<AiClientVO> queryAiClientVOByClientIds(List<String> clientIdList);
 
-    List<AiClientConfigVO> queryAiClientToolMcpIdsByModelIds(List<String> modelIdList);
+    List<AiClientConfigVO> queryAiClientConfigVOBySourceTypeAndId(String sourceType,List<String> sourceIdList);
 }

@@ -6,8 +6,8 @@
 # https://github.com/Sequel-Ace/Sequel-Ace
 #
 # 主机: 127.0.0.1 (MySQL 8.0.42)
-# 数据库: ai-agent
-# 生成时间: 2025-06-14 07:20:19 +0000
+# 数据库: ai-agent-station-study
+# 生成时间: 2025-07-06 06:25:14 +0000
 # ************************************************************
 
 
@@ -19,8 +19,8 @@ SET NAMES utf8mb4;
 /*!40101 SET @OLD_SQL_MODE='NO_AUTO_VALUE_ON_ZERO', SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-CREATE database if NOT EXISTS `ai_agent` default character set utf8mb4 collate utf8mb4_0900_ai_ci;
-use `ai_agent`;
+CREATE database if NOT EXISTS `ai-agent` default character set utf8mb4 collate utf8mb4_0900_ai_ci;
+use `ai-agent`;
 
 # 转储表 ai_agent
 # ------------------------------------------------------------
@@ -196,7 +196,7 @@ LOCK TABLES `ai_client_api` WRITE;
 
 INSERT INTO `ai_client_api` (`id`, `api_id`, `base_url`, `api_key`, `completions_path`, `embeddings_path`, `status`, `create_time`, `update_time`)
 VALUES
-    (1,'1001','https://apis.itedus.cn','sk-lIqVNiHon00O6veJ15Cc57DaF5Dd401f93B3A107B4B3677e','v1/chat/completions','v1/embeddings',1,'2025-06-14 12:33:22','2025-06-14 12:33:22');
+    (1,'1001','https://apis.itedus.cn','sk-SkhkrDzvU5hLCj8U5f980172AdC642C591C209B7676dE5D1','v1/chat/completions','v1/embeddings',1,'2025-06-14 12:33:22','2025-07-05 16:40:21');
 
 /*!40000 ALTER TABLE `ai_client_api` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -227,10 +227,10 @@ LOCK TABLES `ai_client_config` WRITE;
 
 INSERT INTO `ai_client_config` (`id`, `source_type`, `source_id`, `target_type`, `target_id`, `ext_param`, `status`, `create_time`, `update_time`)
 VALUES
-    (1,'model','2001','tool_mcp','5001','\"\"',1,'2025-06-14 12:46:49','2025-06-14 12:47:43'),
-    (2,'model','2001','tool_mcp','5002','\"\"',1,'2025-06-14 12:46:49','2025-06-14 12:47:43'),
+    (1,'model','2001','tool_mcp','5001','\"\"',0,'2025-06-14 12:46:49','2025-07-05 13:46:27'),
+    (2,'model','2001','tool_mcp','5002','\"\"',0,'2025-06-14 12:46:49','2025-07-05 13:46:29'),
     (3,'model','2001','tool_mcp','5003','\"\"',1,'2025-06-14 12:46:49','2025-06-14 12:47:43'),
-    (4,'model','2001','tool_mcp','5004','\"\"',1,'2025-06-14 12:46:49','2025-06-14 12:47:43'),
+    (4,'model','2001','tool_mcp','5005','\"\"',0,'2025-06-14 12:46:49','2025-07-05 16:44:40'),
     (5,'client','3001','advisor','4001','\"\"',1,'2025-06-14 12:46:49','2025-06-14 12:49:46'),
     (6,'client','3001','prompt','6001','\"\"',1,'2025-06-14 12:46:49','2025-06-14 12:50:13'),
     (7,'client','3001','prompt','6002','\"\"',1,'2025-06-14 12:46:49','2025-06-14 12:50:13'),
@@ -357,7 +357,7 @@ INSERT INTO `ai_client_tool_mcp` (`id`, `mcp_id`, `mcp_name`, `transport_type`, 
 VALUES
     (6,'5001','CSDN自动发帖','sse','{\n	\"baseUri\":\"http://192.168.1.108:8101\",\n        \"sseEndpoint\":\"/sse\"\n}',180,1,'2025-06-14 12:36:30','2025-06-14 12:36:40'),
     (7,'5002','微信公众号消息通知','sse','{\n	\"baseUri\":\"http://192.168.1.108:8102\",\n        \"sseEndpoint\":\"/sse\"\n}',180,1,'2025-06-14 12:36:30','2025-06-14 12:36:40'),
-    (8,'5003','本地文件操作','stdio','{\n    \"filesystem\": {\n        \"command\": \"npx\",\n        \"args\": [\n            \"-y\",\n            \"@modelcontextprotocol/server-filesystem\",\n            \"/Users/fuzhengwei/Desktop\",\n            \"/Users/fuzhengwei/Desktop\"\n        ]\n    }\n}',180,1,'2025-06-14 12:36:30','2025-06-14 12:36:40'),
+    (8,'5003','filesystem','stdio','{\n    \"filesystem\": {\n        \"command\": \"npx\",\n        \"args\": [\n            \"-y\",\n            \"@modelcontextprotocol/server-filesystem\",\n            \"/Users/fuzhengwei/Desktop\",\n            \"/Users/fuzhengwei/Desktop\"\n        ]\n    }\n}',180,1,'2025-06-14 12:36:30','2025-07-05 16:31:44'),
     (9,'5004','g-search','stdio','{\n    \"g-search\": {\n        \"command\": \"npx\",\n        \"args\": [\n            \"-y\",\n            \"g-search-mcp\"\n        ]\n    }\n}',180,1,'2025-06-14 12:36:30','2025-06-14 12:36:40'),
     (10,'5005','高德地图','sse','{\n	\"baseUri\":\"https://mcp.amap.com\",\n        \"sseEndpoint\":\"/sse?key=801aabf79ed055c2ff78603cfe851787\"\n}',180,1,'2025-06-14 12:36:30','2025-06-14 12:36:40');
 
