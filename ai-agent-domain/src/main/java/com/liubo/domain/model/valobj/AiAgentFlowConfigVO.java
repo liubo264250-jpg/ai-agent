@@ -1,22 +1,21 @@
-package com.liubo.infrastructure.dao.po;
+package com.liubo.domain.model.valobj;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.io.Serial;
+import java.io.Serializable;
 
-/**
- * 智能体-客户端关联表
- * 表名: ai_agent_flow_config
- */
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class AiAgentFlowConfig {
-
+public class AiAgentFlowConfigVO implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 4580163102760060779L;
     /** 主键ID */
     private Long id;
     /** 智能体ID */
@@ -27,6 +26,4 @@ public class AiAgentFlowConfig {
     private String clientType;
     /** 序列号(执行顺序) */
     private Integer sequence;
-    /** 创建时间 */
-    private LocalDateTime createTime;
 }

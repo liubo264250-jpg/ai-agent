@@ -1,5 +1,6 @@
 package com.liubo.infrastructure.dao;
 
+import com.liubo.domain.model.valobj.AiAgentFlowConfigVO;
 import com.liubo.infrastructure.dao.po.AiAgentFlowConfig;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,4 +24,6 @@ public interface IAiAgentFlowConfigDao {
     int deleteById(@Param("id") Long id);
 
     List<AiAgentFlowConfig> selectList();
+
+    List<AiAgentFlowConfigVO> queryAiAgentClientFlowConfigByAgentId(@Param("aiAgentId") String aiAgentId);
 }

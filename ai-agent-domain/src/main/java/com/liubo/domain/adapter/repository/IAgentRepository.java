@@ -3,6 +3,7 @@ package com.liubo.domain.adapter.repository;
 import com.liubo.domain.model.valobj.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 68
@@ -23,4 +24,8 @@ public interface IAgentRepository {
     List<AiClientVO> queryAiClientVOByClientIds(List<String> clientIdList);
 
     List<AiClientConfigVO> queryAiClientConfigVOBySourceTypeAndId(String sourceType,List<String> sourceIdList);
+
+    List<AiAgentFlowConfigVO> queryAiAgentClientFlowConfigByAgentId(String aiAgentId);
+
+    Map<String,AiAgentFlowConfigVO> queryAiAgentClientFlowConfigMapByAgentId(String aiAgentId);
 }

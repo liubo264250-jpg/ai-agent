@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author 68
@@ -77,9 +80,9 @@ public class AgentRepository implements IAgentRepository {
     }
 
     @Override
-    public List<AiClientConfigVO> queryAiClientConfigVOBySourceTypeAndId(String sourceType,List<String> sourceIdList) {
+    public List<AiClientConfigVO> queryAiClientConfigVOBySourceTypeAndId(String sourceType, List<String> sourceIdList) {
         if (StringUtils.isBlank(sourceType) && CollectionUtils.isEmpty(sourceIdList)) return List.of();
-        return aiClientConfigDao.queryAiClientConfigVOBySourceTypeAndId(sourceType,sourceIdList);
+        return aiClientConfigDao.queryAiClientConfigVOBySourceTypeAndId(sourceType, sourceIdList);
     }
 
     @Override
@@ -92,5 +95,18 @@ public class AgentRepository implements IAgentRepository {
     public List<AiClientVO> queryAiClientVOByClientIds(List<String> clientIdList) {
         if (CollectionUtils.isEmpty(clientIdList)) return List.of();
         return aiClientDao.queryAiClientVOByClientIds(clientIdList);
+    }
+
+    @Override
+    public List<AiAgentFlowConfigVO> queryAiAgentClientFlowConfigByAgentId(String aiAgentId) {
+        if (StringUtils.isBlank(aiAgentId)) return List.of();
+        return aiAgentFlowConfigDao.queryAiAgentClientFlowConfigByAgentId(aiAgentId);
+    }
+
+    @Override
+    public Map<String, AiAgentFlowConfigVO> queryAiAgentClientFlowConfigMapByAgentId(String aiAgentId) {
+        if (StringUtils.isBlank(aiAgentId)) return Map.of();
+        List<AiAgentFlowConfigVO> agentFlowConfigVOList = queryAiAgentClientFlowConfigByAgentId(aiAgentId);
+        return agentFlowConfigVOList.stream().collect(Collectors.toMap(AiAgentFlowConfigVO::getClientType, Function.identity(), (a, b) -> b));
     }
 }

@@ -6,6 +6,8 @@
         <id column="id" property="id"/>
         <result column="agent_id" property="agentId"/>
         <result column="client_id" property="clientId"/>
+        <result column="client_name" property="clientName"/>
+        <result column="client_type" property="clientType"/>
         <result column="sequence" property="sequence"/>
         <result column="create_time" property="createTime"/>
     </resultMap>
@@ -35,5 +37,20 @@
         SELECT id, agent_id, client_id, sequence, create_time
         FROM ai_agent_flow_config
         ORDER BY id
+    </select>
+
+    <select id="queryAiAgentClientFlowConfigByAgentId"
+            resultType="com.liubo.domain.model.valobj.AiAgentFlowConfigVO">
+        SELECT
+            id,
+            agent_id as agentId,
+            client_id as clientId,
+            sequence,
+            client_name as clientName,
+            client_type as clientType
+        FROM
+            ai_agent_flow_config
+        WHERE
+            agent_id = #{aiAgentId}
     </select>
 </mapper>
