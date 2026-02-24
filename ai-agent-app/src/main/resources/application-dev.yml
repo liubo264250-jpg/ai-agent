@@ -44,8 +44,11 @@ spring:
   ai:
     openai:
       base-url: https://apis.itedus.cn
-      api-key:  sk-FOcwM6dx6bBfoOa002C0E888323c4cCe8fBe97E55d3cEe19
-
+      api-key: sk-FOcwM6dx6bBfoOa002C0E888323c4cCe8fBe97E55d3cEe19
+    agent:
+      auto-config:
+        enabled: true
+        client-ids: 3101,3102,3103,3104
 # MyBatis 配置【如需使用记得打开】classpath* 可扫描到 infrastructure 模块中的 mapper
 mybatis:
   mapper-locations: classpath*:mybatis/mapper/**/*.xml
