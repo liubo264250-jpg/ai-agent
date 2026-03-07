@@ -63,7 +63,7 @@ public class FlowAgentMCPTest {
     public McpSyncClient stdioMcpClientGrafana() {
         Map<String, String> env = new HashMap<>();
         env.put("GRAFANA_URL", "http://127.0.0.1:4000");
-        env.put("GRAFANA_API_KEY", "glsa_LU1CjL8ixmYnxY0FkShe3c7xx8BzsqGT_f82429b2");
+        env.put("GRAFANA_API_KEY", "TOKEN");
         var stdioParams = ServerParameters.builder("docker")
                 .args("run",
                         "--rm",
