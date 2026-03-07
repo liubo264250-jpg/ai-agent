@@ -18,7 +18,7 @@ spring:
     mysql:
       username: root
       password: 123456
-      url: jdbc:mysql://124.222.173.48:13306/ai-agent?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&useSSL=true
+      url: jdbc:mysql://localhost:13306/ai-agent?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&useSSL=true
       driver-class-name: com.mysql.cj.jdbc.Driver
       type: com.zaxxer.hikari.HikariDataSource
       hikari:
@@ -34,7 +34,7 @@ spring:
       driver-class-name: org.postgresql.Driver
       username: postgres
       password: postgres
-      url: jdbc:postgresql://124.222.173.48:15432/ai_agent
+      url: jdbc:postgresql://localhost:15432/ai_agent
       type: com.zaxxer.hikari.HikariDataSource
       hikari:
         maximum-pool-size: 5
@@ -48,7 +48,7 @@ spring:
     agent:
       auto-config:
         enabled: true
-        client-ids: 3101,3102,3103,3104
+        client-ids: 3101,3102,3103,3104,4101,4102,4103,4104
 # MyBatis 配置【如需使用记得打开】classpath* 可扫描到 infrastructure 模块中的 mapper
 mybatis:
   mapper-locations: classpath*:mybatis/mapper/**/*.xml

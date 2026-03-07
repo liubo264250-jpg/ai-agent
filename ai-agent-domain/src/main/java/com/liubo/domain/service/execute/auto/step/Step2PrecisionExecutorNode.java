@@ -25,24 +25,8 @@ public class Step2PrecisionExecutorNode extends AbstractExecuteSupport {
             log.warn("⚠️ 分析结果为空，使用默认执行策略");
             analysisResult = "执行当前任务步骤";
         }
-        String executionPrompt = String.format("""
-                **分析师策略:**  %s
-                
-                **执行指令:**  根据上述分析师的策略，执行具体的任务步骤。
-                
-                **执行要求:** 
-                1. 严格按照策略执行
-                2. 使用必要的工具
-                3. 确保执行质量
-                4. 详细记录过程
-                
-                **输出格式:** 
-                执行目标: [明确的执行目标]
-                执行过程: [详细的执行步骤]
-                执行结果: [具体的执行成果]
-                质量检查: [自我质量评估]
-                """, analysisResult);
         AiAgentFlowConfigVO aiAgentClientFlowConfigVO = dynamicContext.getAiAgentClientFlowConfigVOMap().get(AiClientTypeEnum.PRECISION_EXECUTOR_CLIENT.getCode());
+        String executionPrompt = String.format(aiAgentClientFlowConfigVO.getStepPrompt(),requestParameter.getMessage(), analysisResult);
         ChatClient chatClient = getChatClientByClientId(aiAgentClientFlowConfigVO.getClientId());
         String executionResult = chatClient
                 .prompt(executionPrompt)

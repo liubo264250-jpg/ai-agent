@@ -28,24 +28,9 @@ public class Step3QualitySupervisorNode extends AbstractExecuteSupport {
             log.warn("⚠️ 执行结果为空，跳过质量监督");
             return "质量监督跳过";
         }
-
-        String supervisionPrompt = String.format("""
-                **用户原始需求:**  %s
-                
-                **执行结果:**  %s
-                
-                **监督要求:**  请评估执行结果的质量，识别问题，并提供改进建议。
-                
-                **输出格式:** 
-                质量评估: [对执行结果的整体评估]
-                问题识别: [发现的问题和不足]
-                改进建议: [具体的改进建议]
-                质量评分: [1-10分的质量评分]
-                是否通过: [PASS/FAIL/OPTIMIZE]
-                """, requestParameter.getMessage(), executionResult);
-
         // 获取对话客户端
         AiAgentFlowConfigVO aiAgentClientFlowConfigVO = dynamicContext.getAiAgentClientFlowConfigVOMap().get(AiClientTypeEnum.QUALITY_SUPERVISOR_CLIENT.getCode());
+        String supervisionPrompt = String.format(aiAgentClientFlowConfigVO.getStepPrompt(), requestParameter.getMessage(), executionResult);
         ChatClient chatClient = getChatClientByClientId(aiAgentClientFlowConfigVO.getClientId());
 
         String supervisionResult = chatClient

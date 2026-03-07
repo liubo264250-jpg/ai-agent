@@ -26,4 +26,5 @@ public class AiAgentFlowConfigVO implements Serializable {
     private String clientType;
     /** 序列号(执行顺序) */
     private Integer sequence;
+    private String stepPrompt;
 }

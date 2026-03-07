@@ -47,7 +47,8 @@
             client_id as clientId,
             sequence,
             client_name as clientName,
-            client_type as clientType
+            client_type as clientType,
+            step_prompt as stepPrompt
         FROM
             ai_agent_flow_config
         WHERE
