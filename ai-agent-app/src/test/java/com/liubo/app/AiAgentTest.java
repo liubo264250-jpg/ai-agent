@@ -12,8 +12,12 @@ import org.junit.runner.RunWith;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.document.Document;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.api.OpenAiApi;
+import org.springframework.ai.reader.tika.TikaDocumentReader;
+import org.springframework.ai.transformer.splitter.TokenTextSplitter;
+import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -39,6 +43,13 @@ public class AiAgentTest {
 
     @Resource
     private IAiClientToolMcpDao iAiClientToolMcpDao;
+
+    @Autowired
+    private PgVectorStore pgVectorStore;
+
+    @Autowired
+    private TokenTextSplitter tokenTextSplitter;
+
 
     @Test
     public void test_aiClientApiNode() throws Exception {
@@ -92,5 +103,20 @@ public class AiAgentTest {
                 .build()).call().content();
 
         log.info("测试结果(call):{}", content);
+    }
+
+    @Test
+    public void upload() {
+        // textResource、articlePromptWordsResource
+        TikaDocumentReader reader = new TikaDocumentReader("./data/grafana-mcp-tools-guide.md");
+
+        List<Document> documents = reader.get();
+        List<Document> documentSplitterList = tokenTextSplitter.apply(documents);
+
+        documentSplitterList.forEach(doc -> doc.getMetadata().put("knowledge", "grafana-mcp-tools-guide"));
+
+        pgVectorStore.accept(documentSplitterList);
+
+        log.info("上传完成");
     }
 }

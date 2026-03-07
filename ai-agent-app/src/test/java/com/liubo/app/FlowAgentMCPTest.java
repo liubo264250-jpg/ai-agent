@@ -36,13 +36,13 @@ public class FlowAgentMCPTest {
         OpenAiChatModel chatModel = OpenAiChatModel.builder()
                 .openAiApi(OpenAiApi.builder()
                         .baseUrl("https://apis.itedus.cn")
-                        .apiKey("sk-FOcwM6dx6bBfoOa002C0E888323c4cCe8fBe97E55d3cEe19")
+                        .apiKey("sk-rHYRhuAbH9FVTPI3409a5e97Dd85435cAf14E3E0C2F15e55")
                         .completionsPath("v1/chat/completions")
                         .embeddingsPath("v1/embeddings")
                         .build())
                 .defaultOptions(OpenAiChatOptions.builder()
                         .model("gpt-4.1")
-                        .toolCallbacks(new SyncMcpToolCallbackProvider(stdioMcpClientElasticsearch()).getToolCallbacks())
+                        .toolCallbacks(new SyncMcpToolCallbackProvider(stdioMcpClientGrafana()).getToolCallbacks())
                         .build())
                 .build();
         ChatResponse call = chatModel.call(Prompt.builder().messages(new UserMessage("有哪些工具可以使用")).build());
@@ -54,6 +54,27 @@ public class FlowAgentMCPTest {
         env.put("ES_HOST", "http://127.0.0.1:9200");
         var stdioParams = ServerParameters.builder("npx")
                 .args("-y", "@awesome-ai/elasticsearch-mcp")
+                .env(env)
+                .build();
+        McpSyncClient mcpSyncClient = McpClient.sync(new StdioClientTransport(stdioParams)).requestTimeout(Duration.ofSeconds(100)).build();
+        mcpSyncClient.initialize();
+        return mcpSyncClient;
+    }
+    public McpSyncClient stdioMcpClientGrafana() {
+        Map<String, String> env = new HashMap<>();
+        env.put("GRAFANA_URL", "http://127.0.0.1:4000");
+        env.put("GRAFANA_API_KEY", "glsa_LU1CjL8ixmYnxY0FkShe3c7xx8BzsqGT_f82429b2");
+        var stdioParams = ServerParameters.builder("docker")
+                .args("run",
+                        "--rm",
+                        "-i",
+                        "-e",
+                        "GRAFANA_URL",
+                        "-e",
+                        "GRAFANA_API_KEY",
+                        "mcp/grafana",
+                        "-t",
+                        "stdio")
                 .env(env)
                 .build();
         McpSyncClient mcpSyncClient = McpClient.sync(new StdioClientTransport(stdioParams)).requestTimeout(Duration.ofSeconds(100)).build();
