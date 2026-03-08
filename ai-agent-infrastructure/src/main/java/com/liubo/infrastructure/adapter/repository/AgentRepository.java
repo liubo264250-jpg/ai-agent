@@ -112,6 +112,17 @@ public class AgentRepository implements IAgentRepository {
 
     @Override
     public AiAgentVO queryAiAgentByAgentId(String aiAgentId) {
+        if (StringUtils.isBlank(aiAgentId)) return null;
         return aiAgentDao.queryAiAgentByAgentId(aiAgentId);
+    }
+
+    @Override
+    public List<AiAgentTaskScheduleVO> queryAllValidTaskSchedule() {
+        return aiAgentTaskScheduleDao.queryAllValidTaskSchedule();
+    }
+
+    @Override
+    public List<Long> queryAllInvalidTaskScheduleIds() {
+        return aiAgentTaskScheduleDao.queryAllInvalidTaskScheduleIds();
     }
 }

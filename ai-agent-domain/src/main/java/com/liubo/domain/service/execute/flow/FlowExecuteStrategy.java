@@ -4,7 +4,7 @@ import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
 import com.alibaba.fastjson.JSON;
 import com.liubo.domain.model.entity.AutoAgentExecuteResultEntity;
 import com.liubo.domain.model.entity.ExecuteCommandEntity;
-import com.liubo.domain.service.execute.IExecuteStrategy;
+import com.liubo.domain.service.IExecuteStrategy;
 import com.liubo.domain.service.execute.flow.step.factory.DefaultFlowAgentExecuteStrategyFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

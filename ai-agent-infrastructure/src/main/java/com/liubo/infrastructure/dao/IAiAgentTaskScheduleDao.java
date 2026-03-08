@@ -1,5 +1,6 @@
 package com.liubo.infrastructure.dao;
 
+import com.liubo.domain.model.valobj.AiAgentTaskScheduleVO;
 import com.liubo.infrastructure.dao.po.AiAgentTaskSchedule;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,4 +24,8 @@ public interface IAiAgentTaskScheduleDao {
     int deleteById(@Param("id") Long id);
 
     List<AiAgentTaskSchedule> selectList();
+
+    List<AiAgentTaskScheduleVO> queryAllValidTaskSchedule();
+
+    List<Long> queryAllInvalidTaskScheduleIds();
 }

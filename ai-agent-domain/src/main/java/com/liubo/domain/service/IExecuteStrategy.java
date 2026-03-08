@@ -1,4 +1,4 @@
-package com.liubo.domain.service.execute;
+package com.liubo.domain.service;
 
 import com.liubo.domain.model.entity.ExecuteCommandEntity;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;

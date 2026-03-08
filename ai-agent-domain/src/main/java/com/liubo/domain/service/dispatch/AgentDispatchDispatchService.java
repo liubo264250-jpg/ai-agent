@@ -4,7 +4,7 @@ import com.liubo.domain.adapter.repository.IAgentRepository;
 import com.liubo.domain.model.entity.ExecuteCommandEntity;
 import com.liubo.domain.model.valobj.AiAgentVO;
 import com.liubo.domain.service.IAgentDispatchService;
-import com.liubo.domain.service.execute.IExecuteStrategy;
+import com.liubo.domain.service.IExecuteStrategy;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,9 @@ public class AgentDispatchDispatchService implements IAgentDispatchService {
     @Override
     public void dispatch(ExecuteCommandEntity requestParameter, ResponseBodyEmitter emitter) throws Exception {
         AiAgentVO aiAgentVO = repository.queryAiAgentByAgentId(requestParameter.getAiAgentId());
-
+        if (null == aiAgentVO) {
+            throw new Exception("不存在的智能体 aiAgentId:" + requestParameter.getAiAgentId());
+        }
         String strategy = aiAgentVO.getStrategy();
         IExecuteStrategy executeStrategy = executeStrategyMap.get(strategy);
         if (null == executeStrategy) {

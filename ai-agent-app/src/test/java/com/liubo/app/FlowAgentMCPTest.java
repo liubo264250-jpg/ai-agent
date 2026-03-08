@@ -1,10 +1,16 @@
 package com.liubo.app;
 
 import com.alibaba.fastjson.JSON;
+import com.liubo.domain.model.entity.ExecuteCommandEntity;
+import com.liubo.domain.model.valobj.AiAgentTaskScheduleVO;
+import com.liubo.domain.service.IAgentDispatchService;
+import com.liubo.domain.service.ITaskService;
+import com.liubo.types.job.model.TaskScheduleVO;
 import io.modelcontextprotocol.client.McpClient;
 import io.modelcontextprotocol.client.McpSyncClient;
 import io.modelcontextprotocol.client.transport.ServerParameters;
 import io.modelcontextprotocol.client.transport.StdioClientTransport;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,9 +23,12 @@ import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,6 +39,12 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class FlowAgentMCPTest {
+
+    @Resource
+    private ITaskService taskService;
+
+    @Resource
+    private IAgentDispatchService dispatchService;
 
     @Test
     public void test() {
@@ -80,5 +95,20 @@ public class FlowAgentMCPTest {
         McpSyncClient mcpSyncClient = McpClient.sync(new StdioClientTransport(stdioParams)).requestTimeout(Duration.ofSeconds(100)).build();
         mcpSyncClient.initialize();
         return mcpSyncClient;
+    }
+
+    @Test
+    public void  test1() throws Exception {
+        List<AiAgentTaskScheduleVO> aiAgentTaskScheduleVOS = taskService.queryAllValidTaskSchedule();
+        List<TaskScheduleVO> result = new ArrayList<>();
+        for (AiAgentTaskScheduleVO taskScheduleVO : aiAgentTaskScheduleVOS) {
+            dispatchService.dispatch(
+                    ExecuteCommandEntity.builder()
+                            .aiAgentId(taskScheduleVO.getAgentId())
+                            .sessionId(String.valueOf(System.nanoTime()))
+                            .message(taskScheduleVO.getTaskParam())
+                            .maxStep(1)
+                            .build(), new ResponseBodyEmitter());
+        }
     }
 }

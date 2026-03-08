@@ -41,4 +41,27 @@
         FROM ai_agent_task_schedule
         ORDER BY id
     </select>
+    <select id="queryAllValidTaskSchedule" resultType="com.liubo.domain.model.valobj.AiAgentTaskScheduleVO">
+        SELECT
+            id,
+            agent_id as agentId,
+            task_name as taskName,
+            description,
+            cron_expression as cronExpression,
+            task_param as taskParam
+        FROM
+            ai_agent_task_schedule
+        where
+            status = 1
+        ORDER BY
+            id
+    </select>
+    <select id="queryAllInvalidTaskScheduleIds" resultType="java.lang.Long">
+        SELECT
+            id
+        FROM
+            ai_agent_task_schedule
+        where
+            status = 0
+    </select>
 </mapper>

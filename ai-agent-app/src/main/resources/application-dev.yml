@@ -48,12 +48,24 @@ spring:
     agent:
       auto-config:
         enabled: true
-        client-ids: 3101,3102,3103,3104,4101,4102,4103,4104,5101,5102,5103,5104,2101,2102,2103
+        client-ids: 6101
+#        client-ids: 3101,3102,3103,3104,4101,4102,4103,4104,5101,5102,5103,5104,2101,2102,2103
 # MyBatis 配置【如需使用记得打开】classpath* 可扫描到 infrastructure 模块中的 mapper
 mybatis:
   mapper-locations: classpath*:mybatis/mapper/**/*.xml
   config-location:  classpath:/mybatis/config/mybatis-config.xml
-
+xfg:
+  wrench:
+    # 任务调度配置
+    task:
+      job:
+        enabled: true
+        pool-size: 5
+        thread-name-prefix: "test-task-scheduler-"
+        wait-for-tasks-to-complete-on-shutdown: true
+        await-termination-seconds: 30
+        refresh-interval: 30000
+        clean-invalid-tasks-cron: "0 0/5 * * * ?"
 # 日志
 logging:
   level:
