@@ -3,7 +3,7 @@ package com.liubo.trigger.http;
 import com.alibaba.fastjson.JSON;
 import com.liubo.api.dto.AutoAgentRequestDTO;
 import com.liubo.domain.model.entity.ExecuteCommandEntity;
-import com.liubo.domain.service.execute.IExecuteStrategy;
+import com.liubo.domain.service.IAgentDispatchService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
-
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author 68
@@ -24,11 +22,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 @RequestMapping("/api/v1/agent")
 public class AiAgentController {
 
-    @Resource(name = "autoAgentExecuteStrategy")
-    private IExecuteStrategy autoAgentExecuteStrategy;
-
     @Resource
-    private ThreadPoolExecutor threadPoolExecutor;
+    private IAgentDispatchService agentDispatchService;
 
     @PostMapping(value = "auto_agent")
     public ResponseBodyEmitter autoAgent(@RequestBody AutoAgentRequestDTO request, HttpServletResponse response) {
@@ -50,26 +45,7 @@ public class AiAgentController {
                     .sessionId(request.getSessionId())
                     .maxStep(request.getMaxStep())
                     .build();
-
-            // 3. 异步执行AutoAgent
-            threadPoolExecutor.execute(() -> {
-                try {
-                    autoAgentExecuteStrategy.execute(executeCommandEntity, emitter);
-                } catch (Exception e) {
-                    log.error("AutoAgent执行异常：{}", e.getMessage(), e);
-                    try {
-                        emitter.send("执行异常：" + e.getMessage());
-                    } catch (Exception ex) {
-                        log.error("发送异常信息失败：{}", ex.getMessage(), ex);
-                    }
-                } finally {
-                    try {
-                        emitter.complete();
-                    } catch (Exception e) {
-                        log.error("完成流式输出失败：{}", e.getMessage(), e);
-                    }
-                }
-            });
+            agentDispatchService.dispatch(executeCommandEntity, emitter);
             return emitter;
         } catch (Exception e) {
             log.error("AutoAgent请求处理异常：{}", e.getMessage(), e);

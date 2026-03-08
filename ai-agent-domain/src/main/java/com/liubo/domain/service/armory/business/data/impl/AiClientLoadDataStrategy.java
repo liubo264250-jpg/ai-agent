@@ -56,7 +56,7 @@ public class AiClientLoadDataStrategy implements ILoadDataStrategy {
             aiClientModelVOList.forEach(model -> {
                 List<AiClientConfigVO> aiClientConfigVOList = mcpIdMap.get(model.getModelId());
                 if (!CollectionUtils.isEmpty(aiClientConfigVOList)) {
-                    List<String> mcpIdList = aiClientConfigVOList.stream().map(AiClientConfigVO::getTargetId).collect(Collectors.toList());
+                    List<String> mcpIdList = aiClientConfigVOList.stream().map(AiClientConfigVO::getTargetId).distinct().collect(Collectors.toList());
                     model.setToolMcpIds(mcpIdList);
                 }
             });

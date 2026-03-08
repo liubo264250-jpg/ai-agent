@@ -1,5 +1,5 @@
 server:
-  port: 8091
+  port: 8092
 
 # 线程池配置
 thread:
@@ -48,7 +48,7 @@ spring:
     agent:
       auto-config:
         enabled: true
-        client-ids: 3101,3102,3103,3104,4101,4102,4103,4104,5101,5102,5103,5104
+        client-ids: 3101,3102,3103,3104,4101,4102,4103,4104,5101,5102,5103,5104,2101,2102,2103
 # MyBatis 配置【如需使用记得打开】classpath* 可扫描到 infrastructure 模块中的 mapper
 mybatis:
   mapper-locations: classpath*:mybatis/mapper/**/*.xml

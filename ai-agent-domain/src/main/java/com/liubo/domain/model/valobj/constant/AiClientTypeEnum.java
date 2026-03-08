@@ -13,6 +13,9 @@ public enum AiClientTypeEnum {
     PRECISION_EXECUTOR_CLIENT("PRECISION_EXECUTOR_CLIENT", "具体任务执行"),
     QUALITY_SUPERVISOR_CLIENT("QUALITY_SUPERVISOR_CLIENT", "质量检查和优化"),
     RESPONSE_ASSISTANT("RESPONSE_ASSISTANT", "响应结果"),
+    TOOL_MCP_CLIENT("TOOL_MCP_CLIENT", "响应结果"),
+    PLANNING_CLIENT("PLANNING_CLIENT", "响应结果"),
+    EXECUTOR_CLIENT("EXECUTOR_CLIENT", "响应结果"),
     ;
     private String code;
     private String info;

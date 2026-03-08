@@ -109,4 +109,9 @@ public class AgentRepository implements IAgentRepository {
         List<AiAgentFlowConfigVO> agentFlowConfigVOList = queryAiAgentClientFlowConfigByAgentId(aiAgentId);
         return agentFlowConfigVOList.stream().collect(Collectors.toMap(AiAgentFlowConfigVO::getClientType, Function.identity(), (a, b) -> b));
     }
+
+    @Override
+    public AiAgentVO queryAiAgentByAgentId(String aiAgentId) {
+        return aiAgentDao.queryAiAgentByAgentId(aiAgentId);
+    }
 }

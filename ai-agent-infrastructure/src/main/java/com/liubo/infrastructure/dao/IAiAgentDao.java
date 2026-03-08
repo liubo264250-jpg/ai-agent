@@ -1,5 +1,6 @@
 package com.liubo.infrastructure.dao;
 
+import com.liubo.domain.model.valobj.AiAgentVO;
 import com.liubo.infrastructure.dao.po.AiAgent;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,4 +24,6 @@ public interface IAiAgentDao {
     int deleteById(@Param("id") Long id);
 
     List<AiAgent> selectList();
+
+    AiAgentVO queryAiAgentByAgentId(@Param("aiAgentId") String aiAgentId);
 }

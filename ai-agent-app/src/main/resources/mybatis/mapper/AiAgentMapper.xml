@@ -9,6 +9,7 @@
         <result column="description" property="description"/>
         <result column="channel" property="channel"/>
         <result column="status" property="status"/>
+        <result column="strategy" property="strategy"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
     </resultMap>
@@ -39,5 +40,18 @@
         SELECT id, agent_id, agent_name, description, channel, status, create_time, update_time
         FROM ai_agent
         ORDER BY id
+    </select>
+    <select id="queryAiAgentByAgentId" resultType="com.liubo.domain.model.valobj.AiAgentVO">
+        SELECT
+            id,
+            agent_id as agentId,
+            agent_name as agentName,
+            description,
+            channel,
+            strategy
+        FROM
+            ai_agent
+        WHERE
+            agent_id = #{aiAgentId}
     </select>
 </mapper>

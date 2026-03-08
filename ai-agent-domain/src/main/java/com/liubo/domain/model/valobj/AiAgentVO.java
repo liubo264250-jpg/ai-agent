@@ -1,22 +1,19 @@
-package com.liubo.infrastructure.dao.po;
+package com.liubo.domain.model.valobj;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 /**
- * AI智能体配置表
- * 表名: ai_agent
+ * @author 68
+ * 2026/3/8 09:10
  */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class AiAgent {
-
+public class AiAgentVO {
     /** 主键ID */
     private Long id;
     /** 智能体ID */
@@ -29,10 +26,4 @@ public class AiAgent {
     private String channel;
     /** 策略 **/
     private String strategy;
-    /** 状态(0:禁用,1:启用) */
-    private Integer status;
-    /** 创建时间 */
-    private LocalDateTime createTime;
-    /** 更新时间 */
-    private LocalDateTime updateTime;
 }
