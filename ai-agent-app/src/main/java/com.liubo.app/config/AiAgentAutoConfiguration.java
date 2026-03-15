@@ -3,7 +3,7 @@ package com.liubo.app.config;
 import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
 import com.liubo.domain.model.entity.ArmoryCommandEntity;
 import com.liubo.domain.model.valobj.constant.AiAgentEnum;
-import com.liubo.domain.service.armory.factory.DefaultArmoryStrategyFactory;
+import com.liubo.domain.service.armory.node.factory.DefaultArmoryStrategyFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

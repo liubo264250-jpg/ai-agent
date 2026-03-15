@@ -18,7 +18,7 @@
         VALUES (#{promptId}, #{promptName}, #{promptContent}, #{description}, #{status}, #{createTime}, #{updateTime})
     </insert>
 
-    <select id="selectById" resultMap="BaseResultMap">
+    <select id="queryById" resultMap="BaseResultMap">
         SELECT id, prompt_id, prompt_name, prompt_content, description, status, create_time, update_time
         FROM ai_client_system_prompt
         WHERE id = #{id}
@@ -27,7 +27,7 @@
     <update id="updateById">
         UPDATE ai_client_system_prompt
         SET prompt_id = #{promptId}, prompt_name = #{promptName}, prompt_content = #{promptContent}, description = #{description},
-            status = #{status}, create_time = #{createTime}, update_time = #{updateTime}
+            status = #{status}, update_time = #{updateTime}
         WHERE id = #{id}
     </update>
 
@@ -35,7 +35,38 @@
         DELETE FROM ai_client_system_prompt WHERE id = #{id}
     </delete>
 
-    <select id="selectList" resultMap="BaseResultMap">
+    <update id="updateByPromptId">
+        UPDATE ai_client_system_prompt
+        SET prompt_name = #{promptName}, prompt_content = #{promptContent}, description = #{description},
+            status = #{status}, update_time = #{updateTime}
+        WHERE prompt_id = #{promptId}
+    </update>
+
+    <delete id="deleteByPromptId">
+        DELETE FROM ai_client_system_prompt WHERE prompt_id = #{promptId}
+    </delete>
+
+    <select id="queryByPromptId" resultMap="BaseResultMap">
+        SELECT id, prompt_id, prompt_name, prompt_content, description, status, create_time, update_time
+        FROM ai_client_system_prompt
+        WHERE prompt_id = #{promptId}
+    </select>
+
+    <select id="queryEnabledPrompts" resultMap="BaseResultMap">
+        SELECT id, prompt_id, prompt_name, prompt_content, description, status, create_time, update_time
+        FROM ai_client_system_prompt
+        WHERE status = 1
+        ORDER BY id
+    </select>
+
+    <select id="queryByPromptName" resultMap="BaseResultMap">
+        SELECT id, prompt_id, prompt_name, prompt_content, description, status, create_time, update_time
+        FROM ai_client_system_prompt
+        WHERE prompt_name = #{promptName}
+        ORDER BY id
+    </select>
+
+    <select id="queryAll" resultMap="BaseResultMap">
         SELECT id, prompt_id, prompt_name, prompt_content, description, status, create_time, update_time
         FROM ai_client_system_prompt
         ORDER BY id

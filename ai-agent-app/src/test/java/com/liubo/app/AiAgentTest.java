@@ -3,7 +3,7 @@ package com.liubo.app;
 import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
 import com.liubo.domain.model.entity.ArmoryCommandEntity;
 import com.liubo.domain.model.valobj.constant.AiAgentEnum;
-import com.liubo.domain.service.armory.factory.DefaultArmoryStrategyFactory;
+import com.liubo.domain.service.armory.node.factory.DefaultArmoryStrategyFactory;
 import com.liubo.infrastructure.dao.IAiClientToolMcpDao;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

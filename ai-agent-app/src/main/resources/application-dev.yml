@@ -45,10 +45,10 @@ spring:
     openai:
       base-url: https://apis.itedus.cn
       api-key: sk-rHYRhuAbH9FVTPI3409a5e97Dd85435cAf14E3E0C2F15e55
-    agent:
-      auto-config:
-        enabled: true
-        client-ids: 6101
+#    agent:
+#      auto-config:
+#        enabled: true
+#        client-ids: 6101
 #        client-ids: 3101,3102,3103,3104,4101,4102,4103,4104,5101,5102,5103,5104,2101,2102,2103
 # MyBatis 配置【如需使用记得打开】classpath* 可扫描到 infrastructure 模块中的 mapper
 mybatis:
@@ -59,7 +59,7 @@ xfg:
     # 任务调度配置
     task:
       job:
-        enabled: true
+        enabled: false
         pool-size: 5
         thread-name-prefix: "test-task-scheduler-"
         wait-for-tasks-to-complete-on-shutdown: true

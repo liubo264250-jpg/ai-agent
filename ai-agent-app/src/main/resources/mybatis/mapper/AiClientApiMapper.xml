@@ -19,7 +19,7 @@
         VALUES (#{apiId}, #{baseUrl}, #{apiKey}, #{completionsPath}, #{embeddingsPath}, #{status}, #{createTime}, #{updateTime})
     </insert>
 
-    <select id="selectById" resultMap="BaseResultMap">
+    <select id="queryById" resultMap="BaseResultMap">
         SELECT id, api_id, base_url, api_key, completions_path, embeddings_path, status, create_time, update_time
         FROM ai_client_api
         WHERE id = #{id}
@@ -28,7 +28,7 @@
     <update id="updateById">
         UPDATE ai_client_api
         SET api_id = #{apiId}, base_url = #{baseUrl}, api_key = #{apiKey}, completions_path = #{completionsPath},
-            embeddings_path = #{embeddingsPath}, status = #{status}, create_time = #{createTime}, update_time = #{updateTime}
+            embeddings_path = #{embeddingsPath}, status = #{status}, update_time = #{updateTime}
         WHERE id = #{id}
     </update>
 
@@ -36,7 +36,31 @@
         DELETE FROM ai_client_api WHERE id = #{id}
     </delete>
 
-    <select id="selectList" resultMap="BaseResultMap">
+    <update id="updateByApiId">
+        UPDATE ai_client_api
+        SET base_url = #{baseUrl}, api_key = #{apiKey}, completions_path = #{completionsPath},
+            embeddings_path = #{embeddingsPath}, status = #{status}, update_time = #{updateTime}
+        WHERE api_id = #{apiId}
+    </update>
+
+    <delete id="deleteByApiId">
+        DELETE FROM ai_client_api WHERE api_id = #{apiId}
+    </delete>
+
+    <select id="queryByApiId" resultMap="BaseResultMap">
+        SELECT id, api_id, base_url, api_key, completions_path, embeddings_path, status, create_time, update_time
+        FROM ai_client_api
+        WHERE api_id = #{apiId}
+    </select>
+
+    <select id="queryEnabledApis" resultMap="BaseResultMap">
+        SELECT id, api_id, base_url, api_key, completions_path, embeddings_path, status, create_time, update_time
+        FROM ai_client_api
+        WHERE status = 1
+        ORDER BY id
+    </select>
+
+    <select id="queryAll" resultMap="BaseResultMap">
         SELECT id, api_id, base_url, api_key, completions_path, embeddings_path, status, create_time, update_time
         FROM ai_client_api
         ORDER BY id

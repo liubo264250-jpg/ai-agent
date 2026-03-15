@@ -26,4 +26,6 @@ public interface IAiAgentFlowConfigDao {
     List<AiAgentFlowConfig> selectList();
 
     List<AiAgentFlowConfigVO> queryAiAgentClientFlowConfigByAgentId(@Param("aiAgentId") String aiAgentId);
+
+    int deleteByAgentId(@Param("agentId") String agentId);
 }

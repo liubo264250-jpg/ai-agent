@@ -1,10 +1,10 @@
-package com.liubo.domain.service.armory;
+package com.liubo.domain.service.armory.node;
 
 import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
 import com.alibaba.fastjson.JSON;
 import com.liubo.domain.model.entity.ArmoryCommandEntity;
 import com.liubo.domain.service.armory.business.data.ILoadDataStrategy;
-import com.liubo.domain.service.armory.factory.DefaultArmoryStrategyFactory;
+import com.liubo.domain.service.armory.node.factory.DefaultArmoryStrategyFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

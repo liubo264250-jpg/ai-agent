@@ -27,6 +27,7 @@ public class AiClientModel {
     private String modelName;
     /** 模型类型：openai、deepseek、claude */
     private String modelType;
+    private String modelUsage;
     /** 状态：0-禁用，1-启用 */
     private Integer status;
     /** 创建时间 */

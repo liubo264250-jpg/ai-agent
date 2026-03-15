@@ -1,4 +1,4 @@
-package com.liubo.domain.service.armory;
+package com.liubo.domain.service.armory.node;
 
 import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
 import com.alibaba.fastjson.JSON;
@@ -6,7 +6,7 @@ import com.liubo.domain.model.entity.ArmoryCommandEntity;
 import com.liubo.domain.model.valobj.AiClientAdvisorVO;
 import com.liubo.domain.model.valobj.constant.AiAgentEnum;
 import com.liubo.domain.model.valobj.constant.AiClientAdvisorTypeEnum;
-import com.liubo.domain.service.armory.factory.DefaultArmoryStrategyFactory;
+import com.liubo.domain.service.armory.node.factory.DefaultArmoryStrategyFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.vectorstore.VectorStore;

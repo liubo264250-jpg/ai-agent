@@ -17,7 +17,7 @@
         VALUES (#{clientId}, #{clientName}, #{description}, #{status}, #{createTime}, #{updateTime})
     </insert>
 
-    <select id="selectById" resultMap="BaseResultMap">
+    <select id="queryById" resultMap="BaseResultMap">
         SELECT id, client_id, client_name, description, status, create_time, update_time
         FROM ai_client
         WHERE id = #{id}
@@ -26,7 +26,7 @@
     <update id="updateById">
         UPDATE ai_client
         SET client_id = #{clientId}, client_name = #{clientName}, description = #{description}, status = #{status},
-            create_time = #{createTime}, update_time = #{updateTime}
+            update_time = #{updateTime}
         WHERE id = #{id}
     </update>
 
@@ -34,7 +34,38 @@
         DELETE FROM ai_client WHERE id = #{id}
     </delete>
 
-    <select id="selectList" resultMap="BaseResultMap">
+    <update id="updateByClientId">
+        UPDATE ai_client
+        SET client_name = #{clientName}, description = #{description}, status = #{status},
+            update_time = #{updateTime}
+        WHERE client_id = #{clientId}
+    </update>
+
+    <delete id="deleteByClientId">
+        DELETE FROM ai_client WHERE client_id = #{clientId}
+    </delete>
+
+    <select id="queryByClientId" resultMap="BaseResultMap">
+        SELECT id, client_id, client_name, description, status, create_time, update_time
+        FROM ai_client
+        WHERE client_id = #{clientId}
+    </select>
+
+    <select id="queryEnabledClients" resultMap="BaseResultMap">
+        SELECT id, client_id, client_name, description, status, create_time, update_time
+        FROM ai_client
+        WHERE status = 1
+        ORDER BY id
+    </select>
+
+    <select id="queryByClientName" resultMap="BaseResultMap">
+        SELECT id, client_id, client_name, description, status, create_time, update_time
+        FROM ai_client
+        WHERE client_name = #{clientName}
+        ORDER BY id
+    </select>
+
+    <select id="queryAll" resultMap="BaseResultMap">
         SELECT id, client_id, client_name, description, status, create_time, update_time
         FROM ai_client
         ORDER BY id

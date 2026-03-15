@@ -17,7 +17,7 @@
         VALUES (#{ragId}, #{ragName}, #{knowledgeTag}, #{status}, #{createTime}, #{updateTime})
     </insert>
 
-    <select id="selectById" resultMap="BaseResultMap">
+    <select id="queryById" resultMap="BaseResultMap">
         SELECT id, rag_id, rag_name, knowledge_tag, status, create_time, update_time
         FROM ai_client_rag_order
         WHERE id = #{id}
@@ -26,7 +26,7 @@
     <update id="updateById">
         UPDATE ai_client_rag_order
         SET rag_id = #{ragId}, rag_name = #{ragName}, knowledge_tag = #{knowledgeTag}, status = #{status},
-            create_time = #{createTime}, update_time = #{updateTime}
+            update_time = #{updateTime}
         WHERE id = #{id}
     </update>
 
@@ -34,8 +34,39 @@
         DELETE FROM ai_client_rag_order WHERE id = #{id}
     </delete>
 
-    <select id="selectList" resultMap="BaseResultMap">
+    <update id="updateByRagId">
+        UPDATE ai_client_rag_order
+        SET rag_name = #{ragName}, knowledge_tag = #{knowledgeTag}, status = #{status},
+            update_time = #{updateTime}
+        WHERE rag_id = #{ragId}
+    </update>
+
+    <delete id="deleteByRagId">
+        DELETE FROM ai_client_rag_order WHERE rag_id = #{ragId}
+    </delete>
+
+    <select id="queryByRagId" resultMap="BaseResultMap">
         SELECT id, rag_id, rag_name, knowledge_tag, status, create_time, update_time
+        FROM ai_client_rag_order
+        WHERE rag_id = #{ragId}
+    </select>
+
+    <select id="queryEnabledRagOrders" resultMap="BaseResultMap">
+        SELECT id, rag_id, rag_name, knowledge_tag, status, create_time, update_time
+        FROM ai_client_rag_order
+        WHERE status = 1
+        ORDER BY id
+    </select>
+
+    <select id="queryByKnowledgeTag" resultMap="BaseResultMap">
+        SELECT id, rag_id, rag_name, knowledge_tag, status, create_time, update_time
+        FROM ai_client_rag_order
+        WHERE knowledge_tag = #{knowledgeTag}
+        ORDER BY id
+    </select>
+
+    <select id="queryAll" resultMap="BaseResultMap">
+        SELECT id,rag_id, rag_name, knowledge_tag, status, create_time, update_time
         FROM ai_client_rag_order
         ORDER BY id
     </select>

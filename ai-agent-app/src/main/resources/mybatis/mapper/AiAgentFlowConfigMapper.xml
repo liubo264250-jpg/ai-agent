@@ -8,24 +8,25 @@
         <result column="client_id" property="clientId"/>
         <result column="client_name" property="clientName"/>
         <result column="client_type" property="clientType"/>
+        <result column="step_prompt" property="stepPrompt"/>
         <result column="sequence" property="sequence"/>
         <result column="create_time" property="createTime"/>
     </resultMap>
 
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO ai_agent_flow_config (agent_id, client_id, sequence, create_time)
-        VALUES (#{agentId}, #{clientId}, #{sequence}, #{createTime})
+        INSERT INTO ai_agent_flow_config (agent_id, client_id, client_name, client_type, step_prompt, sequence, create_time)
+        VALUES (#{agentId}, #{clientId}, #{clientName}, #{clientType}, #{stepPrompt}, #{sequence}, #{createTime})
     </insert>
 
     <select id="selectById" resultMap="BaseResultMap">
-        SELECT id, agent_id, client_id, sequence, create_time
+        SELECT id, agent_id, client_id, client_name, client_type, step_prompt, sequence, create_time
         FROM ai_agent_flow_config
         WHERE id = #{id}
     </select>
 
     <update id="updateById">
         UPDATE ai_agent_flow_config
-        SET agent_id = #{agentId}, client_id = #{clientId}, sequence = #{sequence}, create_time = #{createTime}
+        SET agent_id = #{agentId}, client_id = #{clientId}, client_name = #{clientName}, client_type = #{clientType}, step_prompt = #{stepPrompt}, sequence = #{sequence}, create_time = #{createTime}
         WHERE id = #{id}
     </update>
 
@@ -34,7 +35,7 @@
     </delete>
 
     <select id="selectList" resultMap="BaseResultMap">
-        SELECT id, agent_id, client_id, sequence, create_time
+        SELECT id, agent_id, client_id, client_name, client_type, step_prompt, sequence, create_time
         FROM ai_agent_flow_config
         ORDER BY id
     </select>
@@ -54,4 +55,8 @@
         WHERE
             agent_id = #{aiAgentId}
     </select>
+
+    <delete id="deleteByAgentId">
+        DELETE FROM ai_agent_flow_config WHERE agent_id = #{agentId}
+    </delete>
 </mapper>

@@ -1,4 +1,4 @@
-package com.liubo.domain.service.armory.factory.element;
+package com.liubo.domain.service.armory.node.factory.element;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.ai.chat.client.ChatClientRequest;

@@ -25,5 +25,11 @@ public interface IAiAgentDao {
 
     List<AiAgent> selectList();
 
+    List<AiAgent> queryAll();
+
+    int deleteByAgentId(@Param("agentId") String agentId);
+
     AiAgentVO queryAiAgentByAgentId(@Param("aiAgentId") String aiAgentId);
+
+    List<AiAgentVO> queryAvailableAgents();
 }

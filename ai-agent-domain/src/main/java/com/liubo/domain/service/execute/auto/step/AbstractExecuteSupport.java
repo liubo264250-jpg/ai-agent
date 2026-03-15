@@ -6,7 +6,7 @@ import com.liubo.domain.adapter.repository.IAgentRepository;
 import com.liubo.domain.model.entity.AutoAgentExecuteResultEntity;
 import com.liubo.domain.model.entity.ExecuteCommandEntity;
 import com.liubo.domain.model.valobj.constant.AiAgentEnum;
-import com.liubo.domain.service.armory.AbstractArmorySupport;
+import com.liubo.domain.service.armory.node.AbstractArmorySupport;
 import com.liubo.domain.service.execute.auto.step.factory.DefaultAutoAgentExecuteStrategyFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

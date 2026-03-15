@@ -26,4 +26,8 @@ public interface IAiClientConfigDao {
     List<AiClientConfig> selectList();
 
     List<AiClientConfigVO> queryAiClientConfigVOBySourceTypeAndId(@Param("sourceType") String sourceType, @Param("sourceIdList")List<String> sourceIdList);
+
+    void deleteBySourceId(@Param("sourceId") String sourceId);
+
+    List<AiClientConfig> queryByConditions(@Param("sourceType") String sourceType, @Param("sourceId") String sourceId, @Param("targetType") String targetType, @Param("targetId") String targetId);
 }

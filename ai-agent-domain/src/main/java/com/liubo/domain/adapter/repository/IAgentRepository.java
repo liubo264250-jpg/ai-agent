@@ -34,4 +34,8 @@ public interface IAgentRepository {
     List<AiAgentTaskScheduleVO> queryAllValidTaskSchedule();
 
     List<Long> queryAllInvalidTaskScheduleIds();
+
+    void createTagOrder(AiRagOrderVO aiRagOrderVO);
+
+    List<AiAgentVO> queryAvailableAgents();
 }

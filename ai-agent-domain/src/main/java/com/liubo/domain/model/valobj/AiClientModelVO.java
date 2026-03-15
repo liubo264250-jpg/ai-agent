@@ -32,6 +32,8 @@ public class AiClientModelVO {
      * 模型类型：openai、deepseek、claude
      */
     private String modelType;
+
+    private String modelUsage;
     /**
      * 工具 mcp ids
      */

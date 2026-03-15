@@ -1,8 +1,8 @@
-package com.liubo.domain.service.armory.factory;
+package com.liubo.domain.service.armory.node.factory;
 
 import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
 import com.liubo.domain.model.entity.ArmoryCommandEntity;
-import com.liubo.domain.service.armory.RootNode;
+import com.liubo.domain.service.armory.node.RootNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package com.liubo.domain.service.armory.business.data;
 
 import com.liubo.domain.model.entity.ArmoryCommandEntity;
-import com.liubo.domain.service.armory.factory.DefaultArmoryStrategyFactory;
+import com.liubo.domain.service.armory.node.factory.DefaultArmoryStrategyFactory;
 
 /**
  * @author 68

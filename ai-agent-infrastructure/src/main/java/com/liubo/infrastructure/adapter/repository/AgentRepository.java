@@ -3,6 +3,7 @@ package com.liubo.infrastructure.adapter.repository;
 import com.liubo.domain.adapter.repository.IAgentRepository;
 import com.liubo.domain.model.valobj.*;
 import com.liubo.infrastructure.dao.*;
+import com.liubo.infrastructure.dao.po.AiClientRagOrder;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -124,5 +125,19 @@ public class AgentRepository implements IAgentRepository {
     @Override
     public List<Long> queryAllInvalidTaskScheduleIds() {
         return aiAgentTaskScheduleDao.queryAllInvalidTaskScheduleIds();
+    }
+
+    @Override
+    public void createTagOrder(AiRagOrderVO aiRagOrderVO) {
+        AiClientRagOrder aiClientRagOrder = new AiClientRagOrder();
+        aiClientRagOrder.setRagId(aiRagOrderVO.getRagId());
+        aiClientRagOrder.setRagName(aiRagOrderVO.getRagName());
+        aiClientRagOrder.setKnowledgeTag(aiRagOrderVO.getKnowledgeTag());
+        aiClientRagOrderDao.insert(aiClientRagOrder);
+    }
+
+    @Override
+    public List<AiAgentVO> queryAvailableAgents() {
+        return aiAgentDao.queryAvailableAgents();
     }
 }

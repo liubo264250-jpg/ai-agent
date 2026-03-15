@@ -1,7 +1,7 @@
 package com.liubo.domain.model.valobj.constant;
 
 import com.liubo.domain.model.valobj.AiClientAdvisorVO;
-import com.liubo.domain.service.armory.factory.element.RagAnswerAdvisor;
+import com.liubo.domain.service.armory.node.factory.element.RagAnswerAdvisor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

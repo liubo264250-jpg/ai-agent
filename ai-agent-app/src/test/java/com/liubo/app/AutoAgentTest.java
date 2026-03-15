@@ -4,7 +4,7 @@ import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
 import com.liubo.domain.model.entity.ArmoryCommandEntity;
 import com.liubo.domain.model.entity.ExecuteCommandEntity;
 import com.liubo.domain.model.valobj.constant.AiAgentEnum;
-import com.liubo.domain.service.armory.factory.DefaultArmoryStrategyFactory;
+import com.liubo.domain.service.armory.node.factory.DefaultArmoryStrategyFactory;
 import com.liubo.domain.service.execute.auto.step.factory.DefaultAutoAgentExecuteStrategyFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;

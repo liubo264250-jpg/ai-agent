@@ -1,9 +1,9 @@
-package com.liubo.domain.service.armory;
+package com.liubo.domain.service.armory.node;
 
 import cn.bugstack.wrench.design.framework.tree.AbstractMultiThreadStrategyRouter;
 import com.liubo.domain.adapter.repository.IAgentRepository;
 import com.liubo.domain.model.entity.ArmoryCommandEntity;
-import com.liubo.domain.service.armory.factory.DefaultArmoryStrategyFactory;
+import com.liubo.domain.service.armory.node.factory.DefaultArmoryStrategyFactory;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

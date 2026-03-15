@@ -17,13 +17,25 @@ public interface IAiClientToolMcpDao {
 
     int insert(AiClientToolMcp record);
 
-    AiClientToolMcp selectById(@Param("id") Long id);
+    AiClientToolMcp queryById(@Param("id") Long id);
 
     int updateById(AiClientToolMcp record);
 
     int deleteById(@Param("id") Long id);
 
-    List<AiClientToolMcp> selectList();
+    List<AiClientToolMcp> queryAll();
+
+    int updateByMcpId(AiClientToolMcp record);
+
+    int deleteByMcpId(@Param("mcpId") String mcpId);
+
+    AiClientToolMcp queryByMcpId(@Param("mcpId") String mcpId);
+
+    List<AiClientToolMcp> queryByStatus(@Param("status") Integer status);
+
+    List<AiClientToolMcp> queryByTransportType(@Param("transportType") String transportType);
+
+    List<AiClientToolMcp> queryEnabledMcps();
 
     /**
      * 根据 clientId 列表，通过 config(a) -> config(b) -> tool_mcp(c) 关联查询 MCP 配置 VO 列表

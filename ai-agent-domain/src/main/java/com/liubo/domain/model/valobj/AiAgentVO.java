@@ -26,4 +26,5 @@ public class AiAgentVO {
     private String channel;
     /** 策略 **/
     private String strategy;
+    private Integer status;
 }

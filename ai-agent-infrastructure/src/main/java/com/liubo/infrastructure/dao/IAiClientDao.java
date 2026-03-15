@@ -17,13 +17,23 @@ public interface IAiClientDao {
 
     int insert(AiClient record);
 
-    AiClient selectById(@Param("id") Long id);
+    AiClient queryById(@Param("id") Long id);
 
     int updateById(AiClient record);
 
     int deleteById(@Param("id") Long id);
 
-    List<AiClient> selectList();
+    List<AiClient> queryAll();
 
     List<AiClientVO> queryAiClientVOByClientIds(@Param("clientIdList") List<String> clientIdList);
+
+    int updateByClientId(AiClient record);
+
+    int deleteByClientId(@Param("clientId") String clientId);
+
+    AiClient queryByClientId(@Param("clientId") String clientId);
+
+    List<AiClient> queryEnabledClients();
+
+    List<AiClient> queryByClientName(@Param("clientName") String clientName);
 }

@@ -17,13 +17,23 @@ public interface IAiClientAdvisorDao {
 
     int insert(AiClientAdvisor record);
 
-    AiClientAdvisor selectById(@Param("id") Long id);
+    AiClientAdvisor queryById(@Param("id") Long id);
 
     int updateById(AiClientAdvisor record);
 
     int deleteById(@Param("id") Long id);
 
-    List<AiClientAdvisor> selectList();
+    List<AiClientAdvisor> queryAll();
 
     List<AiClientAdvisorVO> queryAiClientAdvisorVOByClientIds(@Param("clientIdList") List<String> clientIdList);
+
+    int updateByAdvisorId(AiClientAdvisor record);
+
+    int deleteByAdvisorId(@Param("advisorId") String advisorId);
+
+    AiClientAdvisor queryByAdvisorId(@Param("advisorId") String advisorId);
+
+    List<AiClientAdvisor> queryByStatus(@Param("status") Integer status);
+
+    List<AiClientAdvisor> queryByAdvisorType(@Param("advisorType") String advisorType);
 }

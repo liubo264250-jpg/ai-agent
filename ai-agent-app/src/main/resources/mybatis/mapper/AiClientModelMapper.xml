@@ -8,18 +8,19 @@
         <result column="api_id" property="apiId"/>
         <result column="model_name" property="modelName"/>
         <result column="model_type" property="modelType"/>
+        <result column="model_usage" property="modelUsage"/>
         <result column="status" property="status"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
     </resultMap>
 
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO ai_client_model (model_id, api_id, model_name, model_type, status, create_time, update_time)
-        VALUES (#{modelId}, #{apiId}, #{modelName}, #{modelType}, #{status}, #{createTime}, #{updateTime})
+        INSERT INTO ai_client_model (model_id, api_id, model_name, model_type, status, create_time, update_time,model_usage)
+        VALUES (#{modelId}, #{apiId}, #{modelName}, #{modelType}, #{status}, #{createTime}, #{updateTime},#{modelUsage})
     </insert>
 
-    <select id="selectById" resultMap="BaseResultMap">
-        SELECT id, model_id, api_id, model_name, model_type, status, create_time, update_time
+    <select id="queryById" resultMap="BaseResultMap">
+        SELECT id, model_id, api_id, model_name, model_type, status, create_time, update_time,model_usage
         FROM ai_client_model
         WHERE id = #{id}
     </select>
@@ -27,7 +28,7 @@
     <update id="updateById">
         UPDATE ai_client_model
         SET model_id = #{modelId}, api_id = #{apiId}, model_name = #{modelName}, model_type = #{modelType},
-            status = #{status}, create_time = #{createTime}, update_time = #{updateTime}
+            status = #{status}, update_time = #{updateTime},model_usage = #{modelUsage}
         WHERE id = #{id}
     </update>
 
@@ -35,8 +36,43 @@
         DELETE FROM ai_client_model WHERE id = #{id}
     </delete>
 
-    <select id="selectList" resultMap="BaseResultMap">
-        SELECT id, model_id, api_id, model_name, model_type, status, create_time, update_time
+    <update id="updateByModelId">
+        UPDATE ai_client_model
+        SET api_id = #{apiId}, model_name = #{modelName}, model_type = #{modelType},
+            status = #{status}, update_time = #{updateTime}, model_usage = #{modelUsage}
+        WHERE model_id = #{modelId}
+    </update>
+
+    <delete id="deleteByModelId">
+        DELETE FROM ai_client_model WHERE model_id = #{modelId}
+    </delete>
+
+    <select id="queryByModelId" resultMap="BaseResultMap">
+        SELECT id, model_id, api_id, model_name, model_type, status, create_time, update_time,model_usage
+        FROM ai_client_model
+        WHERE model_id = #{modelId}
+    </select>
+
+    <select id="queryByApiId" resultMap="BaseResultMap">
+        SELECT id, model_id, api_id, model_name, model_type, status, create_time, update_time,model_usage
+        FROM ai_client_model
+        WHERE api_id = #{apiId}
+    </select>
+
+    <select id="queryByModelType" resultMap="BaseResultMap">
+        SELECT id, model_id, api_id, model_name, model_type, status, create_time, update_time,model_usage
+        FROM ai_client_model
+        WHERE model_type = #{modelType}
+    </select>
+
+    <select id="queryEnabledModels" resultMap="BaseResultMap">
+        SELECT id, model_id, api_id, model_name, model_type, status, create_time, update_time,model_usage
+        FROM ai_client_model
+        WHERE status = 1
+    </select>
+
+    <select id="queryAll" resultMap="BaseResultMap">
+        SELECT id, model_id, api_id, model_name, model_type, status, create_time, update_time,model_usage
         FROM ai_client_model
         ORDER BY id
     </select>
@@ -47,7 +83,8 @@
             m.model_id AS modelId,
             m.api_id AS apiId,
             m.model_name AS modelName,
-            m.model_type AS modelType
+            m.model_type AS modelType,
+            m.model_usage AS modelUsage
         FROM
             ai_client_config c
         JOIN

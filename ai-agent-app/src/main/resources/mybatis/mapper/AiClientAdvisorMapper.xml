@@ -19,7 +19,7 @@
         VALUES (#{advisorId}, #{advisorName}, #{advisorType}, #{orderNum}, #{extParam}, #{status}, #{createTime}, #{updateTime})
     </insert>
 
-    <select id="selectById" resultMap="BaseResultMap">
+    <select id="queryById" resultMap="BaseResultMap">
         SELECT id, advisor_id, advisor_name, advisor_type, order_num, ext_param, status, create_time, update_time
         FROM ai_client_advisor
         WHERE id = #{id}
@@ -28,7 +28,7 @@
     <update id="updateById">
         UPDATE ai_client_advisor
         SET advisor_id = #{advisorId}, advisor_name = #{advisorName}, advisor_type = #{advisorType}, order_num = #{orderNum},
-            ext_param = #{extParam}, status = #{status}, create_time = #{createTime}, update_time = #{updateTime}
+            ext_param = #{extParam}, status = #{status}, update_time = #{updateTime}
         WHERE id = #{id}
     </update>
 
@@ -36,7 +36,38 @@
         DELETE FROM ai_client_advisor WHERE id = #{id}
     </delete>
 
-    <select id="selectList" resultMap="BaseResultMap">
+    <update id="updateByAdvisorId">
+        UPDATE ai_client_advisor
+        SET advisor_name = #{advisorName}, advisor_type = #{advisorType}, order_num = #{orderNum},
+            ext_param = #{extParam}, status = #{status}, update_time = #{updateTime}
+        WHERE advisor_id = #{advisorId}
+    </update>
+
+    <delete id="deleteByAdvisorId">
+        DELETE FROM ai_client_advisor WHERE advisor_id = #{advisorId}
+    </delete>
+
+    <select id="queryByAdvisorId" resultMap="BaseResultMap">
+        SELECT id, advisor_id, advisor_name, advisor_type, order_num, ext_param, status, create_time, update_time
+        FROM ai_client_advisor
+        WHERE advisor_id = #{advisorId}
+    </select>
+
+    <select id="queryByStatus" resultMap="BaseResultMap">
+        SELECT id, advisor_id, advisor_name, advisor_type, order_num, ext_param, status, create_time, update_time
+        FROM ai_client_advisor
+        WHERE status = #{status}
+        ORDER BY id
+    </select>
+
+    <select id="queryByAdvisorType" resultMap="BaseResultMap">
+        SELECT id, advisor_id, advisor_name, advisor_type, order_num, ext_param, status, create_time, update_time
+        FROM ai_client_advisor
+        WHERE advisor_type = #{advisorType}
+        ORDER BY id
+    </select>
+
+    <select id="queryAll" resultMap="BaseResultMap">
         SELECT id, advisor_id, advisor_name, advisor_type, order_num, ext_param, status, create_time, update_time
         FROM ai_client_advisor
         ORDER BY id

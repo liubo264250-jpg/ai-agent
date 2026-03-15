@@ -17,15 +17,23 @@ public interface IAiClientApiDao {
 
     int insert(AiClientApi record);
 
-    AiClientApi selectById(@Param("id") Long id);
+    AiClientApi queryById(@Param("id") Long id);
 
     int updateById(AiClientApi record);
 
     int deleteById(@Param("id") Long id);
 
-    List<AiClientApi> selectList();
+    List<AiClientApi> queryAll();
     /**
      * 根据 clientId 列表，通过 config -> model -> api 关联查询去重后的 API 配置 VO 列表
      */
     List<AiClientApiVO> queryAiClientApiVOListByClientIds(@Param("clientIdList") List<String> clientIdList);
+
+    int updateByApiId(AiClientApi record);
+
+    int deleteByApiId(@Param("apiId") String apiId);
+
+    AiClientApi queryByApiId(@Param("apiId") String apiId);
+
+    List<AiClientApi> queryEnabledApis();
 }
